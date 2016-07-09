@@ -7,6 +7,5 @@ dotenv.config();
 
 app.listen(port, err => {
   if (err) return console.error(err);
-
-  return console.log(`Magic happens at: http://localhost:${port}/`);
+  return console.log(`Server listening at: http://localhost:${port}/`);
 });
