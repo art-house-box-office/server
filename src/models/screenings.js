@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-module.exports = mongoose.model('Screening', new Schema({
+module.exports = mongoose.model('Screenings', new Schema({
   movie: {
     type: Schema.Types.ObjectId,
     ref: 'Movies',
