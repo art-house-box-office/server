@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-export default mongoose.model('Screenings', new Schema({
+
+const screeningSchema = new Schema({
   movie: {
     type: Schema.Types.ObjectId,
     ref: 'Movies',
@@ -30,4 +31,26 @@ export default mongoose.model('Screenings', new Schema({
   format: {
     type: String,
   },
-}));
+  // ratioTicketsSale: {
+  //
+  // },
+  // ratioAttendenceAdmissions: {
+  //
+  // },
+  toObject: {
+    virtuals: true,
+  },
+  toJSON: {
+    virtuals: true,
+  },
+});
+
+screeningSchema.virtual('ratioTicketsSale')
+  .get(() => this.attendenceTotal / this.admissionsTotal);
+
+screeningSchema.virtual('ratioAttendenceAdmissions')
+  .get(() => this.attendenceTotal / )
+
+const screening = mongoose.model('Screening', );
+
+export default screening;

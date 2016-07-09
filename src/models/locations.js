@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-export default mongoose.model('Locations', new Schema({
+export default mongoose.model('Location', new Schema({
   name: {
     type: String,
     required: true,

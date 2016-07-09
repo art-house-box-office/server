@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-export default mongoose.model('Theaters', new Schema({
+export default mongoose.model('Theater', new Schema({
   name: {
     type: String,
     required: true,
