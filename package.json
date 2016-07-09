@@ -32,7 +32,8 @@
   "homepage": "https://github.com/art-house-box-office/server#readme",
   "dependencies": {
     "express": "^4.14.0",
-    "mongoose": "^4.5.3"
+    "mongoose": "^4.5.3",
+    "morgan": "^1.7.0"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
