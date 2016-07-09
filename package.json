@@ -7,11 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "start": "env $(cat .env) node dist",
-    "start:watch": "env $(cat .env) nodemon src --exec babel-node",
+    "start": "node dist",
+    "start:watch": "nodemon src --exec babel-node",
     "build": "babel src --no-comments -d dist",
-    "test": "env $(cat .env) mocha --compilers js:babel-register",
-    "test:watch": "env $(cat .env) mocha -w --compilers js:babel-register"
+    "test": "mocha --compilers js:babel-register",
+    "test:watch": "mocha -w --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
@@ -41,7 +41,8 @@
     "babel-register": "^6.9.0",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
-    "eslint": "^3.0.0",
+    "dotenv": "^2.0.0",
+    "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.10.0",
     "eslint-plugin-jsx-a11y": "^1.5.3",
