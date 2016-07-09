@@ -31,12 +31,10 @@ const screeningSchema = new Schema({
   format: {
     type: String,
   },
-  // ratioTicketsSale: {
-  //
-  // },
-  // ratioAttendenceAdmissions: {
-  //
-  // },
+  seats: {
+    type: Number,
+    required: true,
+  },
   toObject: {
     virtuals: true,
   },
@@ -49,8 +47,8 @@ screeningSchema.virtual('ratioTicketsSale')
   .get(() => this.attendenceTotal / this.admissionsTotal);
 
 screeningSchema.virtual('ratioAttendenceAdmissions')
-  .get(() => this.attendenceTotal / )
+  .get(() => this.attendenceTotal / this.seats);
 
-const screening = mongoose.model('Screening', );
+const screening = mongoose.model('Screening', screeningSchema);
 
 export default screening;
