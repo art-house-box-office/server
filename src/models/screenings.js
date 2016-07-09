@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-module.exports = mongoose.model('Screenings', new Schema({
+export default mongoose.model('Screenings', new Schema({
   movie: {
     type: Schema.Types.ObjectId,
     ref: 'Movies',
