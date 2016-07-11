@@ -36,27 +36,27 @@ router
           error: err,
         });
       });
+  })
+
+// POST a Theater
+  .post('/', jsonParser, (req, res, next) => {
+    new Theater(req.body)
+      .save()
+      .then(theater => {
+        res.json({
+          status: 'posted',
+          result: theater,
+        });
+      })
+      .catch(err => {
+        next({
+          status: 'error',
+          result: 'server err',
+          error: err,
+        });
+      });
   });
 
-// // POST a Movie
-//   .post('/', jsonParser, (req, res, next) => {
-//     new Movie(req.body)
-//       .save()
-//       .then(movie => {
-//         res.json({
-//           status: 'posted',
-//           result: movie,
-//         });
-//       })
-//       .catch(err => {
-//         next({
-//           status: 'error',
-//           result: 'server err',
-//           error: err,
-//         });
-//       });
-//   })
-//
 // // PUT (aka update/change) a Movie
 //
 //   .put('/:id', jsonParser, (req, res, next) => {
