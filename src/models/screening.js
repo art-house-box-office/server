@@ -35,6 +35,7 @@ const screeningSchema = new Schema({
     type: Number,
     required: true,
   },
+  // Breaks.  Will check later to confirm if these are needed for virtual properties.
   // toObject: {
   //   virtuals: true,
   // },
@@ -43,11 +44,11 @@ const screeningSchema = new Schema({
   // },
 });
 
-// screeningSchema.virtual('ratioTicketsSale')
-//   .get(() => this.attendenceTotal / this.admissionsTotal);
-//
-// screeningSchema.virtual('ratioAttendenceAdmissions')
-//   .get(() => this.attendenceTotal / this.seats);
+screeningSchema.virtual('ratioTicketsSale')
+  .get(() => this.attendenceTotal / this.admissionsTotal);
+
+screeningSchema.virtual('ratioAttendenceAdmissions')
+  .get(() => this.attendenceTotal / this.seats);
 
 const screening = mongoose.model('Screening', screeningSchema);
 
