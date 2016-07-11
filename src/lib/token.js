@@ -1,4 +1,6 @@
+import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+dotenv.config();
 const superSecret = process.env.APP_SECRET;
 if (!superSecret) {
   console.log('env variable APP_SECRET not set in token.js!');
@@ -11,10 +13,10 @@ module.exports = {
       jwt.sign({
         id: user.id,
         roles: user.roles,
-        username: user.username
+        username: user.username,
       }, superSecret, null, (err, token) => {
         if (err) return reject(err);
-        resolve(token);
+        return resolve(token);
       });
     });
   },
@@ -26,8 +28,8 @@ module.exports = {
     return new Promise((resolve, reject) => {
       jwt.verify(token, superSecret, (err, payload) => {
         if (err) return reject(err);
-        resolve(payload);
+        return resolve(payload);
       });
     });
-  }
+  },
 };
