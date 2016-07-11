@@ -10,7 +10,7 @@ import locations from '../routes/locations';
 
 app.use(morgan('dev'));
 app.use(cors('*'));
-app.use('/', auth);
+app.use('/api', auth);
 
 app.use('/api/locations', locations);
 app.use('/api/screenings', screenings);
