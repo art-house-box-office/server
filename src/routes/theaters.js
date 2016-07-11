@@ -55,29 +55,29 @@ router
           error: err,
         });
       });
+  })
+
+// PUT (aka update/change) a Theater
+
+  .put('/:id', jsonParser, (req, res, next) => {
+    Theater
+    .findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    )
+      .then(updatedTheater => {
+        if (updatedTheater) res.json({ result: updatedTheater });
+      })
+      .catch(err => {
+        next({
+          code: 500,
+          msg: 'unable to modify theater',
+          error: err,
+        });
+      });
   });
 
-// // PUT (aka update/change) a Movie
-//
-//   .put('/:id', jsonParser, (req, res, next) => {
-//     Movie
-//     .findByIdAndUpdate(
-//       req.params.id,
-//       req.body,
-//       { new: true, runValidators: true }
-//     )
-//       .then(updatedMovie => {
-//         if (updatedMovie) res.json({ result: updatedMovie });
-//       })
-//       .catch(err => {
-//         next({
-//           code: 500,
-//           msg: 'unable to modify movie',
-//           error: err,
-//         });
-//       });
-//   })
-//
 // // DELETE a Company
 //
 //   .delete('/:id', (req, res, next) => {
