@@ -14,7 +14,7 @@ app.use('/', auth);
 
 app.use('/api/locations', locations);
 app.use('/api/screenings', screenings);
-// app.use('/api/companies', companies);
+app.use('/api/companies', companies);
 
 
 // eslint-disable-next-line no-unused-vars

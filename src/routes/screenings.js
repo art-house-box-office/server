@@ -42,9 +42,10 @@ router
     new Screening(req.body)
       .save()
       .then(screening => {
-        res.json({
-          status: 'posted',
-          result: screening,
+        if (screening) res.json(screening);
+        else next({
+          code: 404,
+          msg: 'resource with this id not found',
         });
       })
       .catch(err => {
@@ -66,7 +67,11 @@ router
       { new: true, runValidators: true }
     )
       .then(updatedScreening => {
-        if (updatedScreening) res.json({ result: updatedScreening });
+        if (updatedScreening) res.json(updatedScreening);
+        else next({
+          code: 404,
+          msg: 'resource with this id not found',
+        });
       })
       .catch(err => {
         next({
@@ -83,7 +88,11 @@ router
     Screening
     .findByIdAndRemove(req.params.id)
       .then(removedScreening => {
-        if (removedScreening) res.json({ result: removedScreening });
+        if (removedScreening) res.json(removedScreening);
+        else next({
+          code: 404,
+          msg: 'resource with this id not found',
+        });
       })
       .catch(err => {
         next({
