@@ -55,44 +55,44 @@ router
           error: err,
         });
       });
-  });
+  })
 
-// // PUT (aka update/change) a Screening
-//
-//   .put('/:id', jsonParser, (req, res, next) => {
-//     Screening
-//     .findByIdAndUpdate(
-//       req.params.id,
-//       req.body,
-//       { new: true, runValidators: true }
-//     )
-//       .then(updatedScreening => {
-//         if (updatedScreening) res.json({ result: updatedScreening });
-//       })
-//       .catch(err => {
-//         next({
-//           code: 500,
-//           msg: 'unable to modify screening',
-//           error: err,
-//         });
-//       });
-//   })
-//
-// // DELETE a screening
-//
-//   .delete('/:id', (req, res, next) => {
-//     Screening
-//     .findByIdAndRemove(req.params.id)
-//       .then(removedScreening => {
-//         if (removedScreening) res.json({ result: removedScreening });
-//       })
-//       .catch(err => {
-//         next({
-//           code: 500,
-//           msg: 'unable to remove screening',
-//           error: err,
-//         });
-//       });
-//   });
+// PUT (aka update/change) a Screening
+
+  .put('/:id', jsonParser, (req, res, next) => {
+    Company
+    .findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    )
+      .then(updatedCompany => {
+        if (updatedCompany) res.json({ result: updatedCompany });
+      })
+      .catch(err => {
+        next({
+          code: 500,
+          msg: 'unable to modify company',
+          error: err,
+        });
+      });
+  })
+
+// DELETE a screening
+
+  .delete('/:id', (req, res, next) => {
+    Company
+    .findByIdAndRemove(req.params.id)
+      .then(removedCompany => {
+        if (removedCompany) res.json({ result: removedCompany });
+      })
+      .catch(err => {
+        next({
+          code: 500,
+          msg: 'unable to remove company',
+          error: err,
+        });
+      });
+  });
 
 export default router;
