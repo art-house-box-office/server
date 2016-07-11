@@ -7,7 +7,7 @@ import isAuth from '../lib/isAuth';
 import token from '../lib/token';
 
 router
-  .get('/verify', isAuth, (req,res) => {
+  .get('/verify', isAuth, (req, res) => {
     res.json({ valid: 'true' });
   })
   .post('/signup', bodyParser, (req, res, next) => {
@@ -21,26 +21,30 @@ router
       });
     }
 
-    User.findOne({username})
-      .then( exists => {
+    return User.findOne({ username })
+      .then(exists => {
         if (exists) {
           return res.status(500).json({
             msg: 'Unable to create username',
-            reason: 'Username already exists.  Please choose another.'
+            reason: 'Username already exists.  Please choose another.',
           });
         }
 
         const user = new User(req.body);
         user.generateHash(password);
         return user.save()
-          .then(user => token.sign(user))
-          .then(token => res.json( {token, id: user._id, username: user.username } ));
+          .then(savedUser => token.sign(savedUser))
+          .then(returnedToken => res.json({
+            returnedToken,
+            id: user._id,
+            username: user.username,
+          }));
       })
       .catch(err => {
         next({
           code: 500,
           msg: 'unable to create user',
-          error: err
+          error: err,
         });
       });
   })
@@ -56,7 +60,11 @@ router
         }
 
         return token.sign(user)
-          .then(token => res.json({ token, id: user._id, username: user.username }));
+          .then(returnedToken => res.json({
+            returnedToken,
+            id: user._id,
+            username: user.username,
+          }));
       })
       .catch(next);
   });
