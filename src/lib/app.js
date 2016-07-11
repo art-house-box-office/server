@@ -4,12 +4,13 @@ import cors from './cors';
 const app = express();
 export default app;
 import auth from '../routes/auth';
+import locations from '../routes/locations';
 
 app.use(morgan('dev'));
 app.use(cors('*'));
 
 app.use('/', auth);
-
+app.use('/api/locations', locations);
 
 // eslint-disable-next-line  no-unused-vars
 app.use((err, req, res, next) => {
