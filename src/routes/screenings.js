@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 // const bodyParser = require('body-parser');
-const Screening = require('../models/screening');
+import Screening from '../models/screening';
 const router = module.exports = express.Router();
 // const jsonParser = bodyParser.json();
 
