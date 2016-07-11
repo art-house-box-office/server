@@ -57,3 +57,24 @@ router
           });
         });
     });
+
+// PUT (aka update/change) a Screening
+router
+  .put('/:id', jsonParser, (req, res, next) => {
+    Screening
+    .findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    )
+      .then(updatedScreening => {
+        if (updatedScreening) res.json({ result: updatedScreening });
+      })
+      .catch(err => {
+        next({
+          code: 500,
+          msg: 'unable to modify screening',
+          error: err,
+        });
+      });
+  });
