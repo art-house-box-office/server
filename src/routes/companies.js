@@ -19,43 +19,44 @@ router
         code: 404,
         msg: 'No companies found',
       }));
+  })
+
+  // Retrieve a specific Company
+  .get('/:companyId', (req, res, next) => {
+    Company
+      .findById(req.params.companyId)
+      .lean()
+      .then(company => {
+        res.json(company);
+      })
+      .catch(err => {
+        next({
+          code: 404,
+          msg: 'Company not found',
+          error: err,
+        });
+      });
   });
-  // Retrieve a specific Screening
-//   .get('/:screeningId', (req, res, next) => {
-//     Screening
-//       .findById(req.params.screeningId)
-//       .lean()
-//       .then(screening => {
-//         res.json(screening);
-//       })
-//       .catch(err => {
-//         next({
-//           code: 404,
-//           msg: 'Screening not found',
-//           error: err,
-//         });
-//       });
-//   })
-//
-// // POST a screening
-//   .post('/', jsonParser, (req, res, next) => {
-//     new Screening(req.body)
-//       .save()
-//       .then(screening => {
-//         res.json({
-//           status: 'posted',
-//           result: screening,
-//         });
-//       })
-//       .catch(err => {
-//         next({
-//           status: 'error',
-//           result: 'server err',
-//           error: err,
-//         });
-//       });
-//   })
-//
+
+// POST a company
+  // .post('/', jsonParser, (req, res, next) => {
+  //   new Screening(req.body)
+  //     .save()
+  //     .then(screening => {
+  //       res.json({
+  //         status: 'posted',
+  //         result: screening,
+  //       });
+  //     })
+  //     .catch(err => {
+  //       next({
+  //         status: 'error',
+  //         result: 'server err',
+  //         error: err,
+  //       });
+  //     });
+  // })
+
 // // PUT (aka update/change) a Screening
 //
 //   .put('/:id', jsonParser, (req, res, next) => {
