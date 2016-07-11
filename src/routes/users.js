@@ -57,7 +57,7 @@ router
       });
   })
 
-// PUT (aka update/change) a Theater
+// PUT (aka update/change) a User
 
   .put('/:id', jsonParser, (req, res, next) => {
     User
@@ -76,23 +76,22 @@ router
           error: err,
         });
       });
-  });
+  })
 
-// // DELETE a Theater
-//
-//   .delete('/:id', (req, res, next) => {
-//     Theater
-//     .findByIdAndRemove(req.params.id)
-//       .then(removedTheater => {
-//         if (removedTheater) res.json({ result: removedTheater });
-//       })
-//       .catch(err => {
-//         next({
-//           code: 500,
-//           msg: 'unable to remove theater',
-//           error: err,
-//         });
-//       });
-//   });
+// DELETE a User
+  .delete('/:id', (req, res, next) => {
+    User
+    .findByIdAndRemove(req.params.id)
+      .then(removedUser => {
+        if (removedUser) res.json({ result: removedUser });
+      })
+      .catch(err => {
+        next({
+          code: 500,
+          msg: 'unable to remove User',
+          error: err,
+        });
+      });
+  });
 
 export default router;
