@@ -57,7 +57,7 @@ router
       });
   })
 
-// PUT (aka update/change) a Screening
+// PUT (aka update/change) a Company
 
   .put('/:id', jsonParser, (req, res, next) => {
     Company
@@ -78,7 +78,7 @@ router
       });
   })
 
-// DELETE a screening
+// DELETE a Company
 
   .delete('/:id', (req, res, next) => {
     Company
