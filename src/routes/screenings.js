@@ -78,3 +78,22 @@ router
         });
       });
   });
+
+// DELETE a screening
+router
+  .delete('/:id', (req, res, next) => {
+    Screening
+    .findByIdAndRemove(req.params.id)
+      .then(removedScreening => {
+        if (removedScreening) res.json({ result: removedScreening });
+      })
+      .catch(err => {
+        next({
+          code: 500,
+          msg: 'unable to remove screening',
+          error: err,
+        });
+      });
+  });
+
+export default router;
