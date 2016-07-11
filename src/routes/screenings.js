@@ -35,31 +35,29 @@ router
           error: err,
         });
       });
-  });
+  })
 
 // POST a screening
-router
-    .use(jsonParser)
-    .post('/', (req, res) => {
-      new Screening(req.body)
-        .save()
-        .then(screening => {
-          res.json({
-            status: 'posted',
-            result: screening,
-          });
-        })
-        .catch(err => {
-          res.json({
-            status: 'error',
-            result: 'server err',
-            error: err,
-          });
+  .post('/', jsonParser, (req, res, next) => {
+    new Screening(req.body)
+      .save()
+      .then(screening => {
+        res.json({
+          status: 'posted',
+          result: screening,
         });
-    });
+      })
+      .catch(err => {
+        next({
+          status: 'error',
+          result: 'server err',
+          error: err,
+        });
+      });
+  })
 
 // PUT (aka update/change) a Screening
-router
+
   .put('/:id', jsonParser, (req, res, next) => {
     Screening
     .findByIdAndUpdate(
@@ -77,10 +75,10 @@ router
           error: err,
         });
       });
-  });
+  })
 
 // DELETE a screening
-router
+
   .delete('/:id', (req, res, next) => {
     Screening
     .findByIdAndRemove(req.params.id)
