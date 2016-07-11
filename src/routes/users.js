@@ -55,29 +55,29 @@ router
           error: err,
         });
       });
+  })
+
+// PUT (aka update/change) a Theater
+
+  .put('/:id', jsonParser, (req, res, next) => {
+    User
+    .findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    )
+      .then(updatedUser => {
+        if (updatedUser) res.json({ result: updatedUser });
+      })
+      .catch(err => {
+        next({
+          code: 500,
+          msg: 'unable to modify User',
+          error: err,
+        });
+      });
   });
 
-// // PUT (aka update/change) a Theater
-//
-//   .put('/:id', jsonParser, (req, res, next) => {
-//     Theater
-//     .findByIdAndUpdate(
-//       req.params.id,
-//       req.body,
-//       { new: true, runValidators: true }
-//     )
-//       .then(updatedTheater => {
-//         if (updatedTheater) res.json({ result: updatedTheater });
-//       })
-//       .catch(err => {
-//         next({
-//           code: 500,
-//           msg: 'unable to modify theater',
-//           error: err,
-//         });
-//       });
-//   })
-//
 // // DELETE a Theater
 //
 //   .delete('/:id', (req, res, next) => {
