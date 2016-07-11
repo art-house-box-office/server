@@ -8,9 +8,8 @@ const router = express.Router();
 router
   .get('/', (req, res, next) => {
     Location.find()
-      .then(list => {
-        if (list.length > 0) res.json({ result: list });
-        else res.status(400).json({ result: 'no locations posted yet' });
+      .then(locations => {
+        res.json(locations);
       })
       .catch(err => {
         next({
@@ -22,14 +21,12 @@ router
   })
   .get('/:id', (req, res, next) => {
     Location.findById(req.params.id)
-      .then(found => {
-        if (found) res.json({ result: found });
-        else {
-          next({
-            code: 404,
-            msg: 'resource with this id not found',
-          });
-        }
+      .then(location => {
+        if (location) res.json(location);
+        else next({
+          code: 404,
+          msg: 'resource with this id not found',
+        });
       })
       .catch(err => {
         next({
@@ -38,14 +35,16 @@ router
           error: err,
         });
       });
-  });
-
-router
+  })
   .post('/', jsonParser, (req, res, next) => {
     new Location(req.body)
       .save()
       .then(posted => {
-        if (posted) res.json({ result: posted });
+        if (posted) res.json(posted);
+        else next({
+          code: 404,
+          msg: 'resource with this id not found',
+        });
       })
       .catch(err => {
         next({
@@ -54,9 +53,7 @@ router
           error: err,
         });
       });
-  });
-
-router
+  })
   .put('/:id', jsonParser, (req, res, next) => {
     Location.findByIdAndUpdate(
       req.params.id,
@@ -64,7 +61,11 @@ router
       { new: true, runValidators: true }
     )
       .then(updatedLocation => {
-        if (updatedLocation) res.json({ result: updatedLocation });
+        if (updatedLocation) res.json(updatedLocation);
+        else next({
+          code: 404,
+          msg: 'resource with this id not found',
+        });
       })
       .catch(err => {
         next({
@@ -79,7 +80,11 @@ router
   .delete('/:id', (req, res, next) => {
     Location.findByIdAndRemove(req.params.id)
       .then(removedLocation => {
-        if (removedLocation) res.json({ result: removedLocation });
+        if (removedLocation) res.json(removedLocation);
+        else next({
+          code: 404,
+          msg: 'resource with this id not found',
+        });
       })
       .catch(err => {
         next({
