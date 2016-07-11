@@ -6,46 +6,31 @@ const router = module.exports = express.Router();
 
 router
   // Retrieve all Screenings
-  .get('/', (req, res) => {
+  .get('/', (req, res, next) => {
     Screening
       .find({})
       .lean()
       .then(screenings => {
-        const resObj = {
-          status: 'error',
-          result: 'No Screenings Added.',
-        };
-
-        if (screenings.length > 0) {
-          resObj.status = 'success';
-          resObj.result = screenings;
-        }
-
-        res.json(resObj);
-      });
+        res.json(screenings);
+      })
+      .catch(err => next({
+        error: err,
+        code: 404,
+        msg: 'No screenings found'
+      }));
   })
   // Retrieve a specific Screening
-  .get('/:screeningId', (req, res) => {
+  .get('/:screeningId', (req, res, next) => {
     Screening
       .findById(req.params.screeningId)
       .lean()
       .then(screening => {
-        const resObj = {
-          status: 'error',
-          result: `SCREENING NOT FOUND: ${screening.name} does not exist.`,
-        };
-
-        if (screening) {
-          resObj.status = 'success';
-          resObj.result = screening;
-        }
-
-        res.json(resObj);
+        res.json(screening);
       })
       .catch(err => {
         res.json({
-          status: 'error',
-          result: 'Server error',
+          code: 404,
+          msg: 'Screening not found',
           error: err,
         });
       });

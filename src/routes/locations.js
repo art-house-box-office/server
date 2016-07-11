@@ -15,7 +15,7 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to retrive location list',
+          msg: 'unable to retrieve location list',
           error: err,
         });
       });
