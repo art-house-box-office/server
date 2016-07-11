@@ -19,25 +19,25 @@ router
         code: 404,
         msg: 'No movies found',
       }));
+  })
+
+  // Retrieve a specific Movie
+  .get('/:movieId', (req, res, next) => {
+    Movie
+      .findById(req.params.movieId)
+      .lean()
+      .then(movie => {
+        res.json(movie);
+      })
+      .catch(err => {
+        next({
+          code: 404,
+          msg: 'Movie not found',
+          error: err,
+        });
+      });
   });
 
-//   // Retrieve a specific Company
-//   .get('/:companyId', (req, res, next) => {
-//     Company
-//       .findById(req.params.companyId)
-//       .lean()
-//       .then(company => {
-//         res.json(company);
-//       })
-//       .catch(err => {
-//         next({
-//           code: 404,
-//           msg: 'Company not found',
-//           error: err,
-//         });
-//       });
-//   })
-//
 // // POST a Company
 //   .post('/', jsonParser, (req, res, next) => {
 //     new Company(req.body)
