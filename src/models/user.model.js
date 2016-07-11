@@ -5,23 +5,23 @@ import bcrypt from 'bcrypt';
 const userSchema = new Schema({
   username: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
-  firstName:{
+  firstName: {
     type: String,
   },
   lastName: {
-    type: String
-  }
+    type: String,
+  },
   email: {
-    type: String
+    type: String,
   },
   roles: {
-    type: [String]
+    type: [String],
   },
 });
 

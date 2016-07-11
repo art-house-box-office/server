@@ -5,12 +5,12 @@ const Schema = mongoose.Schema;
 const screeningSchema = new Schema({
   movie: {
     type: Schema.Types.ObjectId,
-    ref: 'Movies',
+    ref: 'Movie',
     required: true,
   },
   theater: {
     type: Schema.Types.ObjectId,
-    ref: 'Theaters',
+    ref: 'Theater',
     required: true,
   },
   attendenceTotal: {

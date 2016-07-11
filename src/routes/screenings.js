@@ -1,7 +1,7 @@
 const express = require('express');
 // const bodyParser = require('body-parser');
 const Screening = require('../models/screenings.model');
-const router = module.exports = express.router();
+const router = module.exports = express.Router();
 // const jsonParser = bodyParser.json();
 
 router

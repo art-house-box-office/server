@@ -12,6 +12,6 @@ export default mongoose.model('Theater', new Schema({
   },
   locations: {
     type: Schema.Types.ObjectId,
-    ref: 'Locations',
+    ref: 'Location',
   },
 }));

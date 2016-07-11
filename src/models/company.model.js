@@ -8,7 +8,7 @@ export default mongoose.model('Company', new Schema({
   },
   locations: {
     type: Schema.Types.ObjectId,
-    ref: 'Locations',
+    ref: 'Location',
     required: true,
   },
 }));
