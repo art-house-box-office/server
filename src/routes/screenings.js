@@ -1,8 +1,9 @@
 import express from 'express';
-// const bodyParser = require('body-parser');
+import bodyParser from 'body-parser';
 import Screening from '../models/screening';
+const jsonParser = bodyParser.json();
 const router = module.exports = express.Router();
-// const jsonParser = bodyParser.json();
+
 
 router
   // Retrieve all Screenings
@@ -50,3 +51,24 @@ router
         });
       });
   });
+
+// POST a screening
+router
+    .use(jsonParser)
+    .post('/', (req, res) => {
+      new Screening(req.body)
+        .save()
+        .then(screening => {
+          res.json({
+            status: 'posted',
+            result: screening,
+          });
+        })
+        .catch(err => {
+          res.json({
+            status: 'error',
+            result: 'server err',
+            error: err,
+          });
+        });
+    });
