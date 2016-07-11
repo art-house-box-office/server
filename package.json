@@ -10,10 +10,10 @@
     "build": "cross-env NODE_ENV=production babel src --no-comments -d dist",
     "deploy": "git checkout master && npm run build && heroku login && git push heroku master && heroku ps:scale web=1 && heroku logout",
     "heroku-postbuild": "npm install babel-cli && npm run build",
-    "start": "cross-env NODE_ENV=production node dist",
-    "start:watch": "cross-env NODE_ENV=development nodemon src --exec babel-node",
-    "test": "cross-env NODE_ENV=development mocha --compilers js:babel-register",
-    "test:watch": "cross-env NODE_ENV=development mocha -w --compilers js:babel-register"
+    "start": "node dist",
+    "start:watch": "nodemon src --exec babel-node",
+    "test": "mocha --compilers js:babel-register",
+    "test:watch": "mocha -w --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
