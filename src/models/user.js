@@ -26,14 +26,14 @@ const userSchema = new Schema({
 });
 
 userSchema.methods.generateHash = function(password) {
-  this.password = bcrypt.hashSync(password, 8);
+  return this.password = bcrypt.hashSync(password, 8);
 };
 
-userSchema.methods.compareHash = function(password) {
-  bcrypt.compareSync(password, this.password);
+userSchema.methods.compareHash = function (password) {
+  return bcrypt.compareSync(password, this.password);
 };
 
-const User = mongoose.model('User, userSchema');
+const User = mongoose.model('User', userSchema);
 export default User;
 
 // create new Admin user if there are no users in the collection
