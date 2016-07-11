@@ -36,26 +36,26 @@ router
           error: err,
         });
       });
-  });
+  })
 
-// POST a company
-  // .post('/', jsonParser, (req, res, next) => {
-  //   new Screening(req.body)
-  //     .save()
-  //     .then(screening => {
-  //       res.json({
-  //         status: 'posted',
-  //         result: screening,
-  //       });
-  //     })
-  //     .catch(err => {
-  //       next({
-  //         status: 'error',
-  //         result: 'server err',
-  //         error: err,
-  //       });
-  //     });
-  // })
+// POST a Company
+  .post('/', jsonParser, (req, res, next) => {
+    new Company(req.body)
+      .save()
+      .then(company => {
+        res.json({
+          status: 'posted',
+          result: company,
+        });
+      })
+      .catch(err => {
+        next({
+          status: 'error',
+          result: 'server err',
+          error: err,
+        });
+      });
+  });
 
 // // PUT (aka update/change) a Screening
 //
