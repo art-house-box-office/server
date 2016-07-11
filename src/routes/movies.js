@@ -76,23 +76,23 @@ router
           error: err,
         });
       });
-  });
+  })
 
-// // DELETE a Company
-//
-//   .delete('/:id', (req, res, next) => {
-//     Company
-//     .findByIdAndRemove(req.params.id)
-//       .then(removedCompany => {
-//         if (removedCompany) res.json({ result: removedCompany });
-//       })
-//       .catch(err => {
-//         next({
-//           code: 500,
-//           msg: 'unable to remove company',
-//           error: err,
-//         });
-//       });
-//   });
+// DELETE a Company
+
+  .delete('/:id', (req, res, next) => {
+    Movie
+    .findByIdAndRemove(req.params.id)
+      .then(removedMovie => {
+        if (removedMovie) res.json({ result: removedMovie });
+      })
+      .catch(err => {
+        next({
+          code: 500,
+          msg: 'unable to remove movie',
+          error: err,
+        });
+      });
+  });
 
 export default router;
