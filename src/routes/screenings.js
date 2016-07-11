@@ -17,7 +17,7 @@ router
       .catch(err => next({
         error: err,
         code: 404,
-        msg: 'No screenings found'
+        msg: 'No screenings found',
       }));
   })
   // Retrieve a specific Screening
@@ -29,7 +29,7 @@ router
         res.json(screening);
       })
       .catch(err => {
-        res.json({
+        next({
           code: 404,
           msg: 'Screening not found',
           error: err,
