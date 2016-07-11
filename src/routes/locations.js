@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import Location from '../models/locations';
+import Location from '../models/location';
 
 const router = express.Router();
 

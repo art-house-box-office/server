@@ -35,19 +35,19 @@ const screeningSchema = new Schema({
     type: Number,
     required: true,
   },
-  toObject: {
-    virtuals: true,
-  },
-  toJSON: {
-    virtuals: true,
-  },
+  // toObject: {
+  //   virtuals: true,
+  // },
+  // toJSON: {
+  //   virtuals: true,
+  // },
 });
 
-screeningSchema.virtual('ratioTicketsSale')
-  .get(() => this.attendenceTotal / this.admissionsTotal);
-
-screeningSchema.virtual('ratioAttendenceAdmissions')
-  .get(() => this.attendenceTotal / this.seats);
+// screeningSchema.virtual('ratioTicketsSale')
+//   .get(() => this.attendenceTotal / this.admissionsTotal);
+//
+// screeningSchema.virtual('ratioAttendenceAdmissions')
+//   .get(() => this.attendenceTotal / this.seats);
 
 const screening = mongoose.model('Screening', screeningSchema);
 
