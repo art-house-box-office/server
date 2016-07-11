@@ -17,16 +17,17 @@ router
 
     if (!password) {
       return res.status(400).json({
-        msg: 'No password entered. Please enter a password!'
+        msg: 'No password entered. Please enter a password!',
       });
     }
 
     return User.findOne({ username })
       .then(exists => {
         if (exists) {
-          return res.status(500).json({
-            msg: 'Unable to create username',
-            reason: 'Username already exists.  Please choose another.',
+          return next({
+            code: 500,
+            error: 'Unable to create username',
+            msg: 'Username already exists.  Please choose another.',
           });
         }
 
@@ -56,9 +57,8 @@ router
     User.findOne({ username })
       .then(user => {
         if (!user || !user.compareHash(password)) {
-          return res.status(400).json({ msg: 'Authentication failed.' });
+          return next({ code: 400, error: 'Authentication failed.' });
         }
-
         return token.sign(user)
           .then(returnedToken => res.json({
             returnedToken,
