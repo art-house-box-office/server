@@ -19,25 +19,25 @@ router
         code: 404,
         msg: 'No users found',
       }));
+  })
+
+  // Retrieve a specific User
+  .get('/:userId', (req, res, next) => {
+    User
+      .findById(req.params.userId)
+      .lean()
+      .then(user => {
+        res.json(user);
+      })
+      .catch(err => {
+        next({
+          code: 404,
+          msg: 'User not found',
+          error: err,
+        });
+      });
   });
 
-//   // Retrieve a specific Theater
-//   .get('/:theaterId', (req, res, next) => {
-//     Theater
-//       .findById(req.params.theaterId)
-//       .lean()
-//       .then(theater => {
-//         res.json(theater);
-//       })
-//       .catch(err => {
-//         next({
-//           code: 404,
-//           msg: 'Theater not found',
-//           error: err,
-//         });
-//       });
-//   })
-//
 // // POST a Theater
 //   .post('/', jsonParser, (req, res, next) => {
 //     new Theater(req.body)
