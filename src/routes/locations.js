@@ -23,10 +23,12 @@ router
     Location.findById(req.params.id)
       .then(location => {
         if (location) res.json(location);
-        else next({
-          code: 404,
-          msg: 'resource with this id not found',
-        });
+        else {
+          next({
+            code: 404,
+            msg: 'resource with this id not found',
+          });
+        }
       })
       .catch(err => {
         next({
@@ -41,10 +43,12 @@ router
       .save()
       .then(posted => {
         if (posted) res.json(posted);
-        else next({
-          code: 404,
-          msg: 'resource with this id not found',
-        });
+        else {
+          next({
+            code: 404,
+            msg: 'resource with this id not found',
+          });
+        }
       })
       .catch(err => {
         next({
@@ -62,10 +66,12 @@ router
     )
       .then(updatedLocation => {
         if (updatedLocation) res.json(updatedLocation);
-        else next({
-          code: 404,
-          msg: 'resource with this id not found',
-        });
+        else {
+          next({
+            code: 404,
+            msg: 'resource with this id not found',
+          });
+        }
       })
       .catch(err => {
         next({
@@ -81,10 +87,12 @@ router
     Location.findByIdAndRemove(req.params.id)
       .then(removedLocation => {
         if (removedLocation) res.json(removedLocation);
-        else next({
-          code: 404,
-          msg: 'resource with this id not found',
-        });
+        else {
+          next({
+            code: 404,
+            msg: 'resource with this id not found',
+          });
+        }
       })
       .catch(err => {
         next({
