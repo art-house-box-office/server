@@ -2,8 +2,9 @@ import dotenv from 'dotenv';
 import app from './lib/app';
 
 const port = process.argv[2] || 9000;
+import './lib/setup-mongoose';
 
-dotenv.config();
+dotenv.load();
 
 app.listen(port, err => {
   if (err) return console.error(err);

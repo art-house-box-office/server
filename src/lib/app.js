@@ -3,9 +3,12 @@ import morgan from 'morgan';
 import cors from './cors';
 const app = express();
 export default app;
+import auth from '../routes/auth';
 
 app.use(morgan('dev'));
 app.use(cors('*'));
+
+app.use('/', auth);
 
 
 // eslint-disable-next-line  no-unused-vars
