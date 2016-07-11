@@ -11,18 +11,18 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  firstName: {
-    type: String,
-  },
-  lastName: {
-    type: String,
-  },
-  email: {
-    type: String,
-  },
-  roles: {
-    type: [String],
-  },
+  // firstName: {
+  //   type: String,
+  // },
+  // lastName: {
+  //   type: String,
+  // },
+  // email: {
+  //   type: String,
+  // },
+  // roles: {
+  //   type: [String],
+  // },
 });
 
 userSchema.methods.generateHash = function(password) {
