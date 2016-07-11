@@ -9,6 +9,7 @@ import companies from '../routes/companies';
 import locations from '../routes/locations';
 import movies from '../routes/movies';
 import theaters from '../routes/theaters';
+import users from '../routes/users';
 
 app.use(morgan('dev'));
 app.use(cors('*'));
@@ -19,6 +20,7 @@ app.use('/api/screenings', screenings);
 app.use('/api/companies', companies);
 app.use('/api/movies', movies);
 app.use('/api/theaters', theaters);
+app.use('/api/users', users);
 
 
 // eslint-disable-next-line no-unused-vars
