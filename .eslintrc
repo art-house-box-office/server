@@ -5,8 +5,8 @@
   },
   "extends": "airbnb",
   "parser": "babel-eslint",
+  "root": true,
   "rules": {
-    "no-console": 0    
-  },
-  "root": true
+    "no-console": 0
+  }
 }

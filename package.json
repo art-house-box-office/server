@@ -1,15 +1,16 @@
 {
   "name": "art-house-box-office-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Server-side source code of Art House Box Office application.",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
+    "build": "babel src --no-comments -d dist",
+    "deploy": "git checkout master && npm run build && heroku login && git push heroku master && heroku ps:scale web=1 && heroku logout",
     "start": "node dist",
     "start:watch": "nodemon src --exec babel-node",
-    "build": "babel src --no-comments -d dist",
     "test": "mocha --compilers js:babel-register",
     "test:watch": "mocha -w --compilers js:babel-register"
   },
