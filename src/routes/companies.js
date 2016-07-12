@@ -4,6 +4,7 @@ import Company from '../models/company';
 const jsonParser = bodyParser.json();
 const router = module.exports = express.Router();
 import std404ErrMsg from '../lib/404';
+import hasRole from '../lib/hasRole';
 
 
 router
@@ -82,7 +83,7 @@ router
 
 // DELETE a Company
 
-  .delete('/:id', (req, res, next) => {
+  .delete('/:id', hasRole('admin'), (req, res, next) => {
     Company
     .findByIdAndRemove(req.params.id)
       .then(removedCompany => {
