@@ -4,6 +4,7 @@ import Screening from '../models/screening';
 const jsonParser = bodyParser.json();
 const router = module.exports = express.Router();
 import std404ErrMsg from '../lib/404';
+import hasRole from '../lib/hasRole';
 
 router
   // Retrieve all Screenings
@@ -80,7 +81,7 @@ router
 
 // DELETE a screening
 
-  .delete('/:id', (req, res, next) => {
+  .delete('/:id', hasRole('admin'), (req, res, next) => {
     Screening
     .findByIdAndRemove(req.params.id)
       .then(removedScreening => {

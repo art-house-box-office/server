@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import Location from '../models/location';
 const jsonParser = bodyParser.json();
 import std404ErrMsg from '../lib/404';
+import hasRole from '../lib/hasRole';
 
 const router = express.Router();
 
@@ -68,7 +69,7 @@ router
         });
       });
   })
-  .delete('/:id', (req, res, next) => {
+  .delete('/:id', hasRole('admin'), (req, res, next) => {
     Location.findByIdAndRemove(req.params.id)
       .then(removedLocation => {
         if (removedLocation) res.json(removedLocation);
