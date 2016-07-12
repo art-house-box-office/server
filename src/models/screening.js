@@ -13,7 +13,7 @@ const screeningSchema = new Schema({
     ref: 'Theater',
     required: true,
   },
-  attendenceTotal: {
+  attendanceTotal: {
     type: Number,
     required: true,
   },

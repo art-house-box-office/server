@@ -8,7 +8,9 @@ import token from '../lib/token';
 
 router
   .get('/verify', isAuth, (req, res) => {
-    res.json({ valid: 'true' });
+    console.log(req.user);
+    // User.findOne({username})
+    res.json({ valid: 'true', user: { id: req.user.id, username: req.user.username}});
   })
   .post('/signup', bodyParser, (req, res, next) => {
     const username = req.body.username;
