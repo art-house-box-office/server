@@ -34,6 +34,15 @@ const mockMovie = {
   OMDbRef: 'bar',
 };
 
+const mockLocation = {
+  name: 'mock',
+  city: 'mockCity',
+  state: 'mockState',
+  zip: 99999,
+  country: 'mockCountry',
+  address: 'mockAddress',
+}
+
 
 describe('integration', function () {
 
@@ -484,12 +493,25 @@ describe('integration', function () {
     });
   });
 
-  describe.skip('company endpoint', () => {
-    const url = '/api/theaters';
+  describe('company endpoint', () => {
+    const url = '/api/companies';
     const testData = {
       name: 'test',
-      seats: 30,
     };
+    before('creating mock location entry', function (done) {
+      this.timeout(2000);
+      request
+      .post('/api/locations')
+      .set('authorization', `Bearer ${testUser1.token}`)
+      .send(mockLocation)
+      .end((err, res) => {
+        if (err) return (done(err));
+        const dtr = JSON.parse(res.text);
+        testData.locations = [dtr._id];
+        done();
+      });
+    });
+
     it(`POST to ${url} completes with id`, done => {
       request
         .post(url)

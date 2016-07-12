@@ -11,7 +11,7 @@ export default mongoose.model('Company', new Schema({
     ref: 'User',
   },
   locations: {
-    type: Schema.Types.ObjectId,
+    type: [Schema.Types.ObjectId],
     ref: 'Location',
   },
 }));
