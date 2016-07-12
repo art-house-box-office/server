@@ -43,10 +43,7 @@ router
     new User(req.body)
       .save()
       .then(user => {
-        res.json({
-          status: 'posted',
-          result: user,
-        });
+        res.json(user);
       })
       .catch(err => {
         next({
@@ -67,7 +64,7 @@ router
       { new: true, runValidators: true }
     )
       .then(updatedUser => {
-        if (updatedUser) res.json({ result: updatedUser });
+        if (updatedUser) res.json(updatedUser);
       })
       .catch(err => {
         next({
@@ -83,7 +80,7 @@ router
     User
     .findByIdAndRemove(req.params.id)
       .then(removedUser => {
-        if (removedUser) res.json({ result: removedUser });
+        if (removedUser) res.json(removedUser);
       })
       .catch(err => {
         next({

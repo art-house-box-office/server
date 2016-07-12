@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import Theater from '../models/theater';
 const jsonParser = bodyParser.json();
 const router = module.exports = express.Router();
-
+import std404ErrMsg from '../lib/404';
 
 router
   // Retrieve all Theaters
@@ -12,7 +12,8 @@ router
       .find({})
       .lean()
       .then(theaters => {
-        res.json(theaters);
+        if (theaters) res.json(theaters);
+        else next(std404ErrMsg);
       })
       .catch(err => next({
         error: err,
@@ -27,7 +28,8 @@ router
       .findById(req.params.theaterId)
       .lean()
       .then(theater => {
-        res.json(theater);
+        if (theater) res.json(theater);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -42,12 +44,7 @@ router
   .post('/', jsonParser, (req, res, next) => {
     new Theater(req.body)
       .save()
-      .then(theater => {
-        res.json({
-          status: 'posted',
-          result: theater,
-        });
-      })
+      .then(theater => res.json(theater))
       .catch(err => {
         next({
           status: 'error',
@@ -67,7 +64,8 @@ router
       { new: true, runValidators: true }
     )
       .then(updatedTheater => {
-        if (updatedTheater) res.json({ result: updatedTheater });
+        if (updatedTheater) res.json(updatedTheater);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -84,7 +82,8 @@ router
     Theater
     .findByIdAndRemove(req.params.id)
       .then(removedTheater => {
-        if (removedTheater) res.json({ result: removedTheater });
+        if (removedTheater) res.json(removedTheater);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({

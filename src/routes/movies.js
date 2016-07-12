@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import Movie from '../models/movie';
 const jsonParser = bodyParser.json();
 const router = module.exports = express.Router();
+import std404ErrMsg from '../lib/404';
 
 
 router
@@ -12,7 +13,8 @@ router
       .find({})
       .lean()
       .then(movies => {
-        res.json(movies);
+        if (movies) res.json(movies);
+        else next(std404ErrMsg);
       })
       .catch(err => next({
         error: err,
@@ -27,7 +29,8 @@ router
       .findById(req.params.movieId)
       .lean()
       .then(movie => {
-        res.json(movie);
+        if (movie) res.json(movie);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -43,10 +46,8 @@ router
     new Movie(req.body)
       .save()
       .then(movie => {
-        res.json({
-          status: 'posted',
-          result: movie,
-        });
+        if (movie) res.json(movie);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -67,7 +68,8 @@ router
       { new: true, runValidators: true }
     )
       .then(updatedMovie => {
-        if (updatedMovie) res.json({ result: updatedMovie });
+        if (updatedMovie) res.json(updatedMovie);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -84,7 +86,8 @@ router
     Movie
     .findByIdAndRemove(req.params.id)
       .then(removedMovie => {
-        if (removedMovie) res.json({ result: removedMovie });
+        if (removedMovie) res.json(removedMovie);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({

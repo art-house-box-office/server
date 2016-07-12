@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import Screening from '../models/screening';
 const jsonParser = bodyParser.json();
 const router = module.exports = express.Router();
-
+import std404ErrMsg from '../lib/404';
 
 router
   // Retrieve all Screenings
@@ -12,7 +12,8 @@ router
       .find({})
       .lean()
       .then(screenings => {
-        res.json(screenings);
+        if (screenings) res.json(screenings);
+        else next(std404ErrMsg);
       })
       .catch(err => next({
         error: err,
@@ -26,7 +27,8 @@ router
       .findById(req.params.screeningId)
       .lean()
       .then(screening => {
-        res.json(screening);
+        if (screening) res.json(screening);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -43,10 +45,7 @@ router
       .save()
       .then(screening => {
         if (screening) res.json(screening);
-        else next({
-          code: 404,
-          msg: 'resource with this id not found',
-        });
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -68,10 +67,7 @@ router
     )
       .then(updatedScreening => {
         if (updatedScreening) res.json(updatedScreening);
-        else next({
-          code: 404,
-          msg: 'resource with this id not found',
-        });
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -89,10 +85,7 @@ router
     .findByIdAndRemove(req.params.id)
       .then(removedScreening => {
         if (removedScreening) res.json(removedScreening);
-        else next({
-          code: 404,
-          msg: 'resource with this id not found',
-        });
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({

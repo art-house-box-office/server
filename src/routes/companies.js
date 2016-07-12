@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import Company from '../models/company';
 const jsonParser = bodyParser.json();
 const router = module.exports = express.Router();
+import std404ErrMsg from '../lib/404';
 
 
 router
@@ -12,7 +13,8 @@ router
       .find({})
       .lean()
       .then(companies => {
-        res.json(companies);
+        if (companies) res.json(companies);
+        else next(std404ErrMsg);
       })
       .catch(err => next({
         error: err,
@@ -27,7 +29,8 @@ router
       .findById(req.params.companyId)
       .lean()
       .then(company => {
-        res.json(company);
+        if (company) res.json(company);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -43,17 +46,15 @@ router
     new Company(req.body)
       .save()
       .then(company => {
-        res.json({
-          status: 'posted',
-          result: company,
-        });
+        if (company) res.json(company);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
-          status: 'error',
-          result: 'server err',
+          code: 500,
+          msg: 'unable to create company',
           error: err,
-        });
+          });
       });
   })
 
@@ -67,7 +68,8 @@ router
       { new: true, runValidators: true }
     )
       .then(updatedCompany => {
-        if (updatedCompany) res.json({ result: updatedCompany });
+        if (updatedCompany) res.json(updatedCompany);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
@@ -84,7 +86,8 @@ router
     Company
     .findByIdAndRemove(req.params.id)
       .then(removedCompany => {
-        if (removedCompany) res.json({ result: removedCompany });
+        if (removedCompany) res.json(removedCompany);
+        else next(std404ErrMsg);
       })
       .catch(err => {
         next({
