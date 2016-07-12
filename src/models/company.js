@@ -7,7 +7,7 @@ export default mongoose.model('Company', new Schema({
     required: true,
   },
   locations: {
-    type: Schema.Types.ObjectId,
+    type: [Schema.Types.ObjectId],
     ref: 'Location',
     required: true,
   },
