@@ -3,10 +3,10 @@ import bodyParser from 'body-parser';
 import User from '../models/user';
 const jsonParser = bodyParser.json();
 const router = module.exports = express.Router();
-
+import hasRole from '../lib/hasRole';
 
 router
-.post('/:userId/roles/:role', (req, res, next) => {
+.post('/:userId/roles/:role', hasRole('admin'), (req, res, next) => {
   User.findById(req.params.userId)
     .then(user => {
       if (!user) {

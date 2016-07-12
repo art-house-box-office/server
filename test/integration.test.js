@@ -8,11 +8,6 @@ import token from '../src/lib/token';
 const assert = chai.assert;
 chai.use(chaiHttp);
 
-const theaterTestData = {
-  name: 'test',
-  seats: 30,
-};
-
 const testAdmin = {
   username: 'testAdmin',
   password: 'chai',
@@ -106,19 +101,85 @@ describe('integration', function () {
 
 
   describe('Theater endpoint', () => {
-    it('POST to /api/theaters completes with id', done => {
+    const url = '/api/theaters';
+    const testData = {
+      name: 'test',
+      seats: 30,
+    };
+    it(`POST to ${url} completes with id`, done => {
       request
-        .post('/api/theaters')
-        .set('authorization', `Bearer ${testAdmin.token}`)
-        .send(theaterTestData)
+        .post(url)
+        .set('authorization', `Bearer ${testUser1.token}`)
+        .send(testData)
         .end((err, res) => {
-          // console.log(res);
           assert.equal(res.statusCode, 200);
           const result = JSON.parse(res.text);
-          theaterTestData.id = result._id;
+          testData.id = result._id;
           assert.property(result, '_id');
-          assert.propertyVal(result, 'name', theaterTestData.name);
+          assert.propertyVal(result, 'name', testData.name);
           done();
+        });
+    });
+    it(`GET to ${url}/:id shows new data`, done => {
+      request
+        .get(`${url}/${testData.id}`)
+        .set('authorization', `Bearer ${testUser1.token}`)
+        .end((err, res) => {
+          assert.equal(res.statusCode, 200);
+          const result = JSON.parse(res.text);
+          assert.isObject(result);
+          assert.propertyVal(result, '_id', testData.id);
+          done();
+        });
+    });
+    it(`PUT to ${url}/:id returns modified data`, done => {
+      testData.name = 'newtest';
+      request
+        .put(`${url}/${testData.id}`)
+        .set('authorization', `Bearer ${testUser1.token}`)
+        .send(testData)
+        .end((err, res) => {
+          assert.equal(res.statusCode, 200);
+          const result = JSON.parse(res.text);
+          assert.isObject(result);
+          assert.propertyVal(result, '_id', testData.id);
+          assert.propertyVal(result, 'name', testData.name);
+          done();
+        });
+    });
+    it(`DELETE to ${url}/:id by unauthorized user fails`, done => {
+      request
+        .delete(`${url}/${testData.id}`)
+        .set('authorization', `Bearer ${testUser2.token}`)
+        .end((err, res) => {
+          const result = JSON.parse(res.text);
+          assert.isObject(result);
+          assert.propertyVal(result, 'msg', 'Not Authorized');
+          request
+            .get(`${url}/${testData.id}`)
+            .set('authorization', `Bearer ${testUser2.token}`)
+            .end((err, res) => {
+              const getResult = JSON.parse(res.text);
+              assert.propertyVal(getResult, '_id', testData.id);
+              done();
+            });
+        });
+    });
+    it(`DELETE to ${url}/:id by authorized user completes`, done => {
+      request
+        .delete(`${url}/${testData.id}`)
+        .set('authorization', `Bearer ${testUser1.token}`)
+        .end((err, res) => {
+          const result = JSON.parse(res.text);
+          assert.propertyVal(result, '_id', testData.id);
+          request
+            .get(`${url}/${testData.id}`)
+            .set('authorization', `Bearer ${testUser1.token}`)
+            .end((err, res) => {
+              const getResult = JSON.parse(res.text);
+              assert.propertyVal(getResult, 'msg', 'resource with this id not found')
+              done();
+            });
         });
     });
   });
@@ -128,9 +189,7 @@ describe('integration', function () {
     request
     .delete(`/api/users/${testUser1.id}`)
     .set('authorization', `Bearer ${testAdmin.token}`)
-    .end((err, res) => {
-      done();
-    });
+    .end(done);
   });
 
   after('delete testuser2', function (done) {
@@ -138,9 +197,7 @@ describe('integration', function () {
     request
     .delete(`/api/users/${testUser2.id}`)
     .set('authorization', `Bearer ${testAdmin.token}`)
-    .end((err, res) => {
-      done();
-    });
+    .end(done);
   });
 
   after('delete testAdmin', function (done) {
@@ -148,9 +205,6 @@ describe('integration', function () {
     request
     .delete(`/api/users/${testAdmin.id}`)
     .set('authorization', `Bearer ${testAdmin.token}`)
-    .end((err, res) => {
-      done();
-    });
+    .end(done);
   });
-
 });

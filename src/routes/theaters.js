@@ -4,6 +4,7 @@ import Theater from '../models/theater';
 const jsonParser = bodyParser.json();
 const router = module.exports = express.Router();
 import std404ErrMsg from '../lib/404';
+import hasRole from '../lib/hasRole';
 
 router
   // Retrieve all Theaters
@@ -42,7 +43,6 @@ router
 
 // POST a Theater
   .post('/', jsonParser, (req, res, next) => {
-    console.log('Theater Post req.body is: ', req.body);
     new Theater(req.body)
       .save()
       .then(theater => res.json(theater))
@@ -79,7 +79,7 @@ router
 
 // DELETE a Theater
 
-  .delete('/:id', (req, res, next) => {
+  .delete('/:id', hasRole('admin'), (req, res, next) => {
     Theater
     .findByIdAndRemove(req.params.id)
       .then(removedTheater => {
