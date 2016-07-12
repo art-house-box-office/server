@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production babel src --no-comments -d dist",
+    "build": "babel src --no-comments -d dist",
     "deploy": "git checkout master && npm run build && heroku login && git push heroku master && heroku ps:scale web=1 && heroku logout",
     "heroku-postbuild": "npm install babel-cli && npm run build",
     "start": "node dist",
@@ -35,7 +35,6 @@
   "dependencies": {
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
-    "cross-env": "^1.0.8",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "jsonwebtoken": "^7.0.1",

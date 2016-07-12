@@ -1,4 +1,4 @@
 {
-  "presets": ["airbnb"],
-  "minified": true
+  "minified": true,
+  "presets": ["airbnb"]
 }
