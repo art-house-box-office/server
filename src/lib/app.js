@@ -23,7 +23,7 @@ app.use('/api/screenings', isAuth, screenings);
 app.use('/api/companies', isAuth, companies);
 app.use('/api/movies', isAuth, movies);
 app.use('/api/theaters', isAuth, theaters);
-app.use('/api/users', isAuth, hasRole('admin'), users);
+app.use('/api/users', isAuth, /*hasRole('admin'),*/ users);
 
 
 // eslint-disable-next-line no-unused-vars
