@@ -6,6 +6,33 @@ const router = module.exports = express.Router();
 
 
 router
+.post('/:userId/roles/:role', (req, res, next) => {
+  User.findById(req.params.userId)
+    .then(user => {
+      if (!user) {
+        throw new Error('invalid authentication');
+      }
+      const role = req.params.role;
+      if (user.roles.indexOf(role) > -1) {
+        return user;
+      } else {
+        user.roles.push(role);
+        return user.save();
+      }
+    })
+    .then(user => {
+      res.json({
+        id: user.id,
+        roles: user.roles
+      });
+    })
+    .catch(err => {
+      next({
+        msg: 'unable to add user role',
+        error: err
+      });
+    });
+})
   // Retrieve all Users
   .get('/', (req, res, next) => {
     User

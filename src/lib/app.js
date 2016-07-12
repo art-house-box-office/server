@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+
 import cors from './cors';
 const app = express();
 export default app;
@@ -10,16 +11,17 @@ import locations from '../routes/locations';
 import movies from '../routes/movies';
 import theaters from '../routes/theaters';
 import users from '../routes/users';
+import isAuth from './isAuth';
 
 app.use(morgan('dev'));
 app.use(cors('*'));
 app.use('/api', auth);
 
-app.use('/api/locations', locations);
-app.use('/api/screenings', screenings);
-app.use('/api/companies', companies);
-app.use('/api/movies', movies);
-app.use('/api/theaters', theaters);
+app.use('/api/locations', isAuth, locations);
+app.use('/api/screenings', isAuth, screenings);
+app.use('/api/companies', isAuth, companies);
+app.use('/api/movies', isAuth, movies);
+app.use('/api/theaters', isAuth, theaters);
 app.use('/api/users', users);
 
 
