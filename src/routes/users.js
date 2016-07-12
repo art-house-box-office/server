@@ -75,7 +75,7 @@ router
       .catch(err => {
         next({
           status: 'error',
-          result: 'server err',
+          msg: 'server err',
           error: err,
         });
       });
