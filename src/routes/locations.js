@@ -40,6 +40,22 @@ router
         });
       });
   })
+  // Retrieve all locations by company
+  .get('/bycompany/:companyId', (req, res, next) => {
+    Location
+      .find({ company: req.params.companyId })
+      .then(locations => {
+        if (locations) res.json(locations);
+        else next(std404ErrMsg);
+      })
+      .catch(err => {
+        next({
+          code: 500,
+          error: err,
+          msg: 'Locations not found',
+        });
+      });
+  })
   // Create a Location
   .post('/', jsonParser, (req, res, next) => {
     new Location(req.body)
