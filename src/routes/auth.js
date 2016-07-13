@@ -59,7 +59,10 @@ router
     User.findOne({ username })
       .then(user => {
         if (!user || !user.compareHash(password)) {
-          return next({ code: 400, error: 'Authentication failed.', msg: 'Username and/or password does not match.' });
+          return next({
+            code: 400,
+            error: 'Authentication failed.',
+            msg: 'Username and/or password does not match.' });
         }
         return token.sign(user)
           .then(returnedToken => res.json({
