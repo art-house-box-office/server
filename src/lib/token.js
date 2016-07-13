@@ -1,12 +1,9 @@
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-
-dotenv.config();
 
 const superSecret = process.env.APP_SECRET;
 
 if (!superSecret) {
-  console.log('env variable APP_SECRET not set in token.js!'); // eslint-disable-line
+  console.log('No env for APP_SECRET'); // eslint-disable-line
   process.exit(1);
 }
 
