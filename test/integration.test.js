@@ -32,8 +32,7 @@ const mockTheater = {
 };
 
 const mockMovie = {
-  key: 'foo',
-  OMDbRef: 'bar',
+  OMDbRef: 'foo',
 };
 
 const mockLocation = {
@@ -334,8 +333,13 @@ describe('integration', function () { // eslint-disable-line
   describe('movie endpoint', function () { // eslint-disable-line
     const url = '/api/movies';
     const testData = {
-      key: 'testKey',
       OMDbRef: 'testRef',
+      title: 'testTitle',
+      genre: ['test1', 'test2'],
+      critic: 8,
+      release: 1953,
+      director: 'testDirector',
+      country: 'testCountry',
     };
 
     it(`POST to ${url} completes with id`, function (done) { // eslint-disable-line
@@ -348,7 +352,7 @@ describe('integration', function () { // eslint-disable-line
           const result = JSON.parse(res.text);
           testData.id = result._id; // eslint-disable-line
           assert.property(result, '_id');
-          assert.propertyVal(result, 'key', testData.key);
+          assert.propertyVal(result, 'title', testData.title);
           done();
         });
     });
@@ -367,7 +371,7 @@ describe('integration', function () { // eslint-disable-line
     });
 
     it(`PUT to ${url}/:id returns modified data`, function (done) { // eslint-disable-line
-      testData.key = 'newtest';
+      testData.title = 'newtest';
       request
         .put(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -377,7 +381,7 @@ describe('integration', function () { // eslint-disable-line
           const result = JSON.parse(res.text);
           assert.isObject(result);
           assert.propertyVal(result, '_id', testData.id);
-          assert.propertyVal(result, 'key', testData.key);
+          assert.propertyVal(result, 'title', testData.title);
           done();
         });
     });
