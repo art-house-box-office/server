@@ -10,7 +10,7 @@ export default mongoose.model('Theater', new Schema({
     type: Number,
     required: true,
   },
-  locations: {
+  location: {
     type: Schema.Types.ObjectId,
     ref: 'Location',
   },

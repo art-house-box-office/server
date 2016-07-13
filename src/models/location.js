@@ -22,11 +22,6 @@ export default mongoose.model('Location', new Schema({
     type: String,
     required: true,
   },
-  theaters: {
-    type: Schema.Types.ObjectId,
-    ref: 'Theater',
-    // required: true,
-  },
   company: {
     type: Schema.Types.ObjectId,
     ref: 'Company',

@@ -6,6 +6,50 @@ const router = module.exports = express.Router();
 import std404ErrMsg from '../lib/404';
 
 router
+// GET aggregate results
+  .get('/agg', (req, res, next) => {
+    const {
+      company,
+      type,
+      title,
+      genre,
+      director,
+      criticmin,
+      criticmax,
+      releasemin,
+      releasemax,
+      country,
+      location,
+      datemin,
+      datemax,
+      day,
+      timemin,
+      timemax,
+    } = req.query;
+    Screening.aggData(
+      company,
+      type,
+      title,
+      genre,
+      director,
+      criticmin,
+      criticmax,
+      releasemin,
+      releasemax,
+      country,
+      location,
+      datemin,
+      datemax,
+      day,
+      timemin,
+      timemax)
+    .then(data => res.json(data))
+    .catch(err => next({
+      code: 404,
+      msg: 'Data not found',
+      error: err,
+    }));
+  })
   // Retrieve all Screenings
   .get('/', (req, res, next) => {
     Screening
