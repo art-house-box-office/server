@@ -27,10 +27,6 @@ const locationSchema = new Schema({
     type: String,
     required: true,
   },
-  theaters: {
-    type: Schema.Types.ObjectId,
-    ref: 'Theater',
-  },
   company: {
     type: Schema.Types.ObjectId,
     ref: 'Company',

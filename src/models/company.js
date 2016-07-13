@@ -11,10 +11,6 @@ const companySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
-  locations: {
-    type: [Schema.Types.ObjectId],
-    ref: 'Location',
-  },
 });
 
 export default mongoose.model('Company', companySchema);

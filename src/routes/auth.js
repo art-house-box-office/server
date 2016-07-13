@@ -10,8 +10,6 @@ const jsonParser = bodyParser.json();
 router
   // Verify user
   .get('/verify', isAuth, (req, res) => {
-    console.log(req.user); // eslint-disable-line
-    // User.findOne({username})
     res.json({
       valid: 'true',
       user: {
