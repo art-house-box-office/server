@@ -32,7 +32,7 @@ const mockTheater = {
 };
 
 const mockMovie = {
-  OMDbRef: 'foo',
+  title: 'E.T.',
 };
 
 const mockLocation = {
@@ -333,13 +333,7 @@ describe('integration', function () { // eslint-disable-line
   describe('movie endpoint', function () { // eslint-disable-line
     const url = '/api/movies';
     const testData = {
-      OMDbRef: 'testRef',
-      title: 'testTitle',
-      genre: ['test1', 'test2'],
-      critic: 8,
-      release: 1953,
-      director: 'testDirector',
-      country: 'testCountry',
+      title: 'Jaws',
     };
 
     it(`POST to ${url} completes with id`, function (done) { // eslint-disable-line
@@ -533,6 +527,7 @@ describe('integration', function () { // eslint-disable-line
           if (err) return (done(err));
           const dtr = JSON.parse(res.text);
           testData.locations = [dtr._id]; // eslint-disable-line
+          mockLocation.id = dtr._id;
           done();
         });
     });
@@ -617,6 +612,33 @@ describe('integration', function () { // eslint-disable-line
             });
         });
     });
+  });
+
+  after('delete mockTheater', done => {
+    request
+      .delete(`/api/theaters/${mockTheater.id}`)
+      .set('authorization', `Bearer ${testUser1.token}`)
+      .end(() => {
+        done();
+      });
+  });
+
+  after('delete mockLocation', done => {
+    request
+      .delete(`/api/locations/${mockLocation.id}`)
+      .set('authorization', `Bearer ${testUser1.token}`)
+      .end(() => {
+        done();
+      });
+  });
+
+  after('delete mockMovie', done => {
+    request
+      .delete(`/api/movies/${mockMovie.id}`)
+      .set('authorization', `Bearer ${testUser1.token}`)
+      .end(() => {
+        done();
+      });
   });
 
   after('delete testuser1', function (done) { // eslint-disable-line
