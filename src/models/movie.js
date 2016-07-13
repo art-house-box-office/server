@@ -7,27 +7,33 @@ const movieSchema = new Schema({
     type: String,
     required: true,
   },
+  OMDbdata: {
+    type: Schema.types.mixed,
+  },
   title: {
     type: String,
   },
   genres: [{
     type: String,
   }],
-  critic: {
+  metascore: {
     type: Number,
     min: 0,
-    max: 10,
+    max: 100,
   },
-  release: {
-    type: Number,
-    min: 1800,
+  released: {
+    type: Date,
   },
-  director: {
-    type: String,
+  directors: {
+    type: [String],
   },
-  country: {
-    type: String,
+  countries: {
+    type: [String],
   },
+  OMDb: {
+    type: Boolean,
+    required: true,
+  }
 });
 
 export default mongoose.model('Movie', movieSchema);

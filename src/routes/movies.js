@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import std404ErrMsg from '../lib/404';
 import hasRole from '../lib/hasRole';
 import Movie from '../models/movie';
-
+import * from '../lib/omdb';
 const router = express.Router(); // eslint-disable-line
 const jsonParser = bodyParser.json();
 
@@ -42,10 +42,27 @@ router
   })
   // Create a Movie
   .post('/', jsonParser, (req, res, next) => {
-    new Movie(req.body)
-      .save()
+    omdb.title(req.body.title)
       .then(movie => {
-        if (movie) res.json(movie);
+        let newMovie = {}
+        if (movie) {
+          newMovie.OMDb = true;
+          newMovie.OMDbData = movie;
+          newMovie.OMDbRef = movie.imdb;
+          newMovie.title = movie.title;
+          newMovie.genres = movie.genres;
+          newMovie.released = movie.released;
+          newMovie.directors = movie.directors;
+          newMovie.countries = movie.countries;
+          if (movie.metascore) newMovie.metascore = movie.metascore;
+        } else {
+          newMovie = req.body;
+          newMovie.OMDb = false;
+        }
+        return new Movie(newMovie).save();
+      })
+      .then(movie => {
+        if (movie) res.json(movie)
         else next(std404ErrMsg);
       })
       .catch(err => {
