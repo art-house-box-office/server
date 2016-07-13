@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
-export default mongoose.model('Location', new Schema({
+const locationSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -35,4 +36,6 @@ export default mongoose.model('Location', new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Company',
   },
-}));
+});
+
+export default mongoose.model('Location', locationSchema);

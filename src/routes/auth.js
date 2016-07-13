@@ -1,24 +1,36 @@
 import express from 'express';
-const router = express.Router();
-import bp from 'body-parser';
-import User from '../models/user';
-const bodyParser = bp.json();
+import bodyParser from 'body-parser';
 import isAuth from '../lib/isAuth';
 import token from '../lib/token';
+import User from '../models/user';
+
+const router = express.Router(); // eslint-disable-line
+const jsonParser = bodyParser.json();
 
 router
+  // Verify user
   .get('/verify', isAuth, (req, res) => {
-    console.log(req.user);
+    console.log(req.user); // eslint-disable-line
     // User.findOne({username})
-    res.json({ valid: 'true', user: { id: req.user.id, username: req.user.username}});
+    res.json({
+      valid: 'true',
+      user: {
+        id: req.user.id,
+        username: req.user.username,
+      },
+    });
   })
-  .post('/signup', bodyParser, (req, res, next) => {
+  // User signup
+  .post('/signup', jsonParser, (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
+
+    // eslint-disable-next-line no-param-reassign
     delete req.body.password;
 
     if (!password) {
       return res.status(400).json({
+        code: 400,
         msg: 'No password entered. Please enter a password!',
       });
     }
@@ -29,46 +41,54 @@ router
           return next({
             code: 500,
             error: 'Unable to create username',
-            msg: 'Username already exists.  Please choose another.',
+            msg: 'Username already exists. Please choose another.',
           });
         }
 
         const user = new User(req.body);
+
         user.generateHash(password);
+
         return user.save()
           .then(savedUser => token.sign(savedUser))
           .then(returnedToken => res.json({
             returnedToken,
-            id: user._id,
+            id: user._id, // eslint-disable-line
             username: user.username,
           }));
       })
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to create user',
           error: err,
+          msg: 'unable to create user',
         });
       });
   })
-
-  .post('/signin', bodyParser, (req, res, next) => {
+  // User sigin
+  .post('/signin', jsonParser, (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
-    delete req.body;
+
+    delete req.body; // eslint-disable-line
+
     User.findOne({ username })
       .then(user => {
         if (!user || !user.compareHash(password)) {
-          return next({ code: 400, error: 'Authentication failed.', msg: 'Username and/or password does not match.' });
+          return next({
+            code: 400,
+            error: 'Authentication failed.',
+            msg: 'Username and/or password does not match.',
+          });
         }
         return token.sign(user)
           .then(returnedToken => res.json({
             returnedToken,
-            id: user._id,
+            id: user._id, // eslint-disable-line
             username: user.username,
           }));
       })
       .catch(next);
   });
 
-module.exports = router;
+export default router;

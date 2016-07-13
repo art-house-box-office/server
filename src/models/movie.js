@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
-export default mongoose.model('Movie', new Schema({
+const movieSchema = new Schema({
   key: {
     type: String,
     required: true,
@@ -10,4 +11,6 @@ export default mongoose.model('Movie', new Schema({
     type: String,
     required: true,
   },
-}));
+});
+
+export default mongoose.model('Movie', movieSchema);

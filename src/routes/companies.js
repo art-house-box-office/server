@@ -1,11 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import Company from '../models/company';
-const jsonParser = bodyParser.json();
-const router = module.exports = express.Router();
 import std404ErrMsg from '../lib/404';
 import hasRole from '../lib/hasRole';
+import Company from '../models/company';
 
+const router = express.Router(); // eslint-disable-line
+const jsonParser = bodyParser.json();
 
 router
   // Retrieve all Companies
@@ -18,12 +18,11 @@ router
         else next(std404ErrMsg);
       })
       .catch(err => next({
-        error: err,
         code: 404,
+        error: err,
         msg: 'No companies found',
       }));
   })
-
   // Retrieve a specific Company
   .get('/:companyId', (req, res, next) => {
     Company
@@ -36,13 +35,12 @@ router
       .catch(err => {
         next({
           code: 404,
-          msg: 'Company not found',
           error: err,
+          msg: 'Company not found',
         });
       });
   })
-
-// POST a Company
+  // Create a Company
   .post('/', jsonParser, (req, res, next) => {
     new Company(req.body)
       .save()
@@ -53,21 +51,18 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to create company',
           error: err,
-          });
+          msg: 'Unable to create company',
+        });
       });
   })
-
-// PUT (aka update/change) a Company
-
+  // Update/change a specific Company
   .put('/:id', jsonParser, (req, res, next) => {
     Company
-    .findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    )
+      .findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      })
       .then(updatedCompany => {
         if (updatedCompany) res.json(updatedCompany);
         else next(std404ErrMsg);
@@ -75,17 +70,15 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to modify company',
           error: err,
+          msg: 'Unable to modify company',
         });
       });
   })
-
-// DELETE a Company
-
+  // Remove a Company
   .delete('/:id', hasRole('admin'), (req, res, next) => {
     Company
-    .findByIdAndRemove(req.params.id)
+      .findByIdAndRemove(req.params.id)
       .then(removedCompany => {
         if (removedCompany) res.json(removedCompany);
         else next(std404ErrMsg);
@@ -93,8 +86,8 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to remove company',
           error: err,
+          msg: 'unable to remove company',
         });
       });
   });

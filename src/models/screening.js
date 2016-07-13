@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 
+const Schema = mongoose.Schema;
 
 const screeningSchema = new Schema({
   movie: {
@@ -35,7 +35,7 @@ const screeningSchema = new Schema({
     type: Number,
     required: true,
   },
-  // Breaks.  Will check later to confirm if these are needed for virtual properties.
+  // Breaks. Will check later to confirm if these are needed for virtual properties.
   // toObject: {
   //   virtuals: true,
   // },
@@ -50,6 +50,4 @@ screeningSchema.virtual('ratioTicketsSale')
 screeningSchema.virtual('ratioAttendenceAdmissions')
   .get(() => this.attendenceTotal / this.seats);
 
-const screening = mongoose.model('Screening', screeningSchema);
-
-export default screening;
+export default mongoose.model('Screening', screeningSchema);

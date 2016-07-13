@@ -1,11 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import Movie from '../models/movie';
-const jsonParser = bodyParser.json();
-const router = module.exports = express.Router();
 import std404ErrMsg from '../lib/404';
 import hasRole from '../lib/hasRole';
+import Movie from '../models/movie';
 
+const router = express.Router(); // eslint-disable-line
+const jsonParser = bodyParser.json();
 
 router
   // Retrieve all Movies
@@ -18,12 +18,11 @@ router
         else next(std404ErrMsg);
       })
       .catch(err => next({
-        error: err,
         code: 404,
+        error: err,
         msg: 'No movies found',
       }));
   })
-
   // Retrieve a specific Movie
   .get('/:movieId', (req, res, next) => {
     Movie
@@ -36,13 +35,12 @@ router
       .catch(err => {
         next({
           code: 404,
-          msg: 'Movie not found',
           error: err,
+          msg: 'Movie not found',
         });
       });
   })
-
-// POST a Movie
+  // Create a Movie
   .post('/', jsonParser, (req, res, next) => {
     new Movie(req.body)
       .save()
@@ -52,22 +50,19 @@ router
       })
       .catch(err => {
         next({
-          status: 'error',
-          result: 'server err',
+          code: 500,
           error: err,
+          msg: 'Unable to create movie',
         });
       });
   })
-
-// PUT (aka update/change) a Movie
-
+  // Update/change a specific Movie
   .put('/:id', jsonParser, (req, res, next) => {
     Movie
-    .findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    )
+      .findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      })
       .then(updatedMovie => {
         if (updatedMovie) res.json(updatedMovie);
         else next(std404ErrMsg);
@@ -75,14 +70,12 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to modify movie',
+          msg: 'Unable to modify movie',
           error: err,
         });
       });
   })
-
-// DELETE a Company
-
+  // Remove a Movie
   .delete('/:id', hasRole('admin'), (req, res, next) => {
     Movie
     .findByIdAndRemove(req.params.id)
@@ -93,8 +86,8 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to remove movie',
           error: err,
+          msg: 'Unable to remove movie',
         });
       });
   });

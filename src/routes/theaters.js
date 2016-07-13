@@ -1,10 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import Theater from '../models/theater';
-const jsonParser = bodyParser.json();
-const router = module.exports = express.Router();
 import std404ErrMsg from '../lib/404';
 import hasRole from '../lib/hasRole';
+import Theater from '../models/theater';
+
+const router = express.Router(); // eslint-disable-line
+const jsonParser = bodyParser.json();
 
 router
   // Retrieve all Theaters
@@ -17,12 +18,11 @@ router
         else next(std404ErrMsg);
       })
       .catch(err => next({
-        error: err,
         code: 404,
+        error: err,
         msg: 'No theaters found',
       }));
   })
-
   // Retrieve a specific Theater
   .get('/:theaterId', (req, res, next) => {
     Theater
@@ -35,35 +35,31 @@ router
       .catch(err => {
         next({
           code: 404,
-          msg: 'Theater not found',
           error: err,
+          msg: 'Theater not found',
         });
       });
   })
-
-// POST a Theater
+  // Create a Theater
   .post('/', jsonParser, (req, res, next) => {
     new Theater(req.body)
       .save()
       .then(theater => res.json(theater))
       .catch(err => {
         next({
-          status: 'error',
-          result: 'server err',
+          code: 500,
+          result: 'Unable to create theater',
           error: err,
         });
       });
   })
-
-// PUT (aka update/change) a Theater
-
+  // Update/change a specific Theater
   .put('/:id', jsonParser, (req, res, next) => {
     Theater
-    .findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    )
+      .findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      })
       .then(updatedTheater => {
         if (updatedTheater) res.json(updatedTheater);
         else next(std404ErrMsg);
@@ -71,17 +67,15 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to modify theater',
           error: err,
+          msg: 'Unable to modify theater',
         });
       });
   })
-
-// DELETE a Theater
-
+  // Remove a Theater
   .delete('/:id', hasRole('admin'), (req, res, next) => {
     Theater
-    .findByIdAndRemove(req.params.id)
+      .findByIdAndRemove(req.params.id)
       .then(removedTheater => {
         if (removedTheater) res.json(removedTheater);
         else next(std404ErrMsg);
@@ -89,8 +83,8 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to remove theater',
           error: err,
+          msg: 'Unable to remove theater',
         });
       });
   });
