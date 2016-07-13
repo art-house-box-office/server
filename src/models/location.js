@@ -30,7 +30,6 @@ const locationSchema = new Schema({
   theaters: {
     type: Schema.Types.ObjectId,
     ref: 'Theater',
-    // required: true,
   },
   company: {
     type: Schema.Types.ObjectId,

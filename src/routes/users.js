@@ -26,6 +26,7 @@ router
     User
       .findById(req.params.userId)
       .lean()
+      .populate('company')
       .then(user => {
         res.json(user);
       })

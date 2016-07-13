@@ -46,7 +46,6 @@ router
         }
 
         const user = new User(req.body);
-
         user.generateHash(password);
 
         return user.save()

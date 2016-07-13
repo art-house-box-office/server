@@ -28,6 +28,7 @@ router
     Company
       .findById(req.params.companyId)
       .lean()
+      // .populate('locations')
       .then(company => {
         if (company) res.json(company);
         else next(std404ErrMsg);

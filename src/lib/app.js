@@ -21,7 +21,7 @@ app.use('/api/screenings', isAuth, screenings);
 app.use('/api/companies', isAuth, companies);
 app.use('/api/movies', isAuth, movies);
 app.use('/api/theaters', isAuth, theaters);
-app.use('/api/users', isAuth, hasRole('admin'), users);
+app.use('/api/users', isAuth, /*hasRole('admin'),*/ users);
 
 app.use((err, req, res, next) => { // eslint-disable-line
   console.error(err); // eslint-disable-line

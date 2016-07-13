@@ -21,6 +21,10 @@ const userSchema = new Schema({
   email: {
     type: String,
   },
+  company: {
+    type: Schema.Types.ObjectId,
+    ref: 'Company',
+  },
   roles: {
     type: [String],
   },
