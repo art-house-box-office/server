@@ -25,8 +25,7 @@ router
     const username = req.body.username;
     const password = req.body.password;
 
-    // eslint-disable-next-line no-param-reassign
-    delete req.body.password;
+    delete req.body.password; // eslint-disable-line
 
     if (!password) {
       return res.status(400).json({

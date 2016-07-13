@@ -43,6 +43,7 @@ const User = mongoose.model('User', userSchema);
 
 export default User;
 
+// TODO: create script to run this code before npm start (prestart in scripts of package.json)?
 // create new Admin user if there are no users in the collection
 const newAdmin = () => {
   const adminData = {

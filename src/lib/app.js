@@ -1,5 +1,5 @@
 import express from 'express';
-// import morgan from 'morgan';
+import morgan from 'morgan';
 import cors from './cors';
 import isAuth from './isAuth';
 import hasRole from './hasRole';
@@ -13,8 +13,8 @@ import users from '../routes/users';
 
 const app = express();
 
-// app.use(morgan('dev'));
-app.use(cors('*'));
+if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
+app.use(cors(process.env.CDN_URL));
 app.use('/api', auth);
 app.use('/api/locations', isAuth, locations);
 app.use('/api/screenings', isAuth, screenings);
@@ -25,13 +25,11 @@ app.use('/api/users', isAuth, /*hasRole('admin'),*/ users);
 
 app.use((err, req, res, next) => { // eslint-disable-line
   console.error(err); // eslint-disable-line
-  res
-    .status(err.code || 500)
-    .json({
-      code: 500,
-      error: err.error || 'Server error',
-      msg: err.msg,
-    });
+  res.status(err.code || 500).json({
+    code: 500,
+    error: err.error || 'Server error',
+    msg: err.msg,
+  });
 });
 
 export default app;
