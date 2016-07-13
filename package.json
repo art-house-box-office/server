@@ -9,7 +9,7 @@
   "scripts": {
     "build": "babel src --no-comments -d dist",
     "deploy": "git checkout master && npm run build && heroku login && git push heroku master && heroku ps:scale web=1 && heroku logout",
-    "heroku-postbuild": "npm install babel-cli airbnb && npm run build",
+    "heroku-postbuild": "npm install babel-cli babel-preset-airbnb eslint-config-airbnb && npm run build",
     "start": "node dist",
     "start:watch": "nodemon src --exec babel-node",
     "test": "mocha --compilers js:babel-register",
