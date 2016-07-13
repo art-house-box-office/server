@@ -1,10 +1,24 @@
 import APIClient from 'omdb-api-client';
 const omdb = new APIClient();
 
-export title function(title) {
-  return obdm({t: title}).list();
-}
+export default {
+  title (title) {
+  return omdb({t: title}).list();
+  },
 
-export imdb function(imdb) {
+  imdb (imdb) {
   return omdb({i: imdb}).list();
+  },
+  populate (movie, newData = {}) {
+    newData.OMDb = true;
+    newData.OMDbdata = movie;
+    newData.OMDbRef = movie.imdb;
+    newData.title = movie.title;
+    newData.genres = movie.genres;
+    newData.released = movie.released;
+    newData.directors = movie.directors;
+    newData.countries = movie.countries;
+    if (movie.metascore) newData.metascore = movie.metascore;
+    return newData;
+  }
 }

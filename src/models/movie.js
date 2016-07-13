@@ -5,13 +5,13 @@ const Schema = mongoose.Schema;
 const movieSchema = new Schema({
   OMDbRef: {
     type: String,
-    required: true,
   },
   OMDbdata: {
-    type: Schema.types.mixed,
+    type: Schema.Types.Mixed,
   },
   title: {
     type: String,
+    required: true,
   },
   genres: [{
     type: String,

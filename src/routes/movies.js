@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import std404ErrMsg from '../lib/404';
 import hasRole from '../lib/hasRole';
 import Movie from '../models/movie';
-import * from '../lib/omdb';
+import omdb from '../lib/omdb';
 const router = express.Router(); // eslint-disable-line
 const jsonParser = bodyParser.json();
 
@@ -27,10 +27,40 @@ router
   .get('/:movieId', (req, res, next) => {
     Movie
       .findById(req.params.movieId)
-      .lean()
       .then(movie => {
-        if (movie) res.json(movie);
+        if (movie) {
+          if (movie.OMDb) {
+            return omdb.imdb(movie.OMDbRef)
+            .then(omdbMovie => {
+              return Object.assign(movie, omdb.populate(omdbMovie, movie)).save();
+            })
+            .catch(() => movie);
+          } else {
+            return omdb.title(movie.title)
+            .then(omdbMovie => {
+              return Object.assign(movie, omdb.populate(omdbMovie, movie)).save();
+            })
+            .catch(() => movie);
+          }
+        }
         else next(std404ErrMsg);
+      })
+      .then(movie => {
+        res.json(movie);
+      })
+      .catch(err => {
+        next({
+          code: 404,
+          error: err,
+          msg: 'Movie not found',
+        });
+      });
+  })
+  // search movie by title
+  .get('/search/:title', (req, res, next) => {
+    omdb.title(req.params.title)
+      .then((movie) => {
+        res.json(movie);
       })
       .catch(err => {
         next({
@@ -42,27 +72,20 @@ router
   })
   // Create a Movie
   .post('/', jsonParser, (req, res, next) => {
+    let newMovie = {};
     omdb.title(req.body.title)
       .then(movie => {
-        let newMovie = {}
-        if (movie) {
-          newMovie.OMDb = true;
-          newMovie.OMDbData = movie;
-          newMovie.OMDbRef = movie.imdb;
-          newMovie.title = movie.title;
-          newMovie.genres = movie.genres;
-          newMovie.released = movie.released;
-          newMovie.directors = movie.directors;
-          newMovie.countries = movie.countries;
-          if (movie.metascore) newMovie.metascore = movie.metascore;
-        } else {
-          newMovie = req.body;
-          newMovie.OMDb = false;
-        }
+        newMovie = omdb.populate(movie);
+        return new Movie(newMovie).save();
+      })
+      // omdb.title errors out to here
+      .catch(() => {
+        newMovie = req.body;
+        newMovie.OMDb = false;
         return new Movie(newMovie).save();
       })
       .then(movie => {
-        if (movie) res.json(movie)
+        if (movie) res.json(movie);
         else next(std404ErrMsg);
       })
       .catch(err => {
