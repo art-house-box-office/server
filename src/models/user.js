@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 import bcrypt from 'bcryptjs';
+
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   username: {
@@ -29,28 +30,33 @@ const userSchema = new Schema({
   },
 });
 
-userSchema.methods.generateHash = function(password) {
-  return this.password = bcrypt.hashSync(password, 8);
+userSchema.methods.generateHash = function generateHash(password) {
+  this.password = bcrypt.hashSync(password, 8);
+  return this.password;
 };
 
-userSchema.methods.compareHash = function (password) {
+userSchema.methods.compareHash = function generateHash(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
 const User = mongoose.model('User', userSchema);
+
 export default User;
 
 // create new Admin user if there are no users in the collection
 const newAdmin = () => {
-  const adminData = { username: 'Admin', roles: ['admin'] };
+  const adminData = {
+    username: 'Admin',
+    roles: ['admin'],
+  };
+
   const user = new User(adminData);
+
   user.generateHash('password');
   user.save();
 };
 
 User.find()
   .then(users => {
-    if (users.length === 0) {
-      newAdmin();
-    }
+    if (users.length === 0) newAdmin();
   });

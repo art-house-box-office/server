@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
-export default mongoose.model('Theater', new Schema({
+const theaterSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -14,4 +15,6 @@ export default mongoose.model('Theater', new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Location',
   },
-}));
+});
+
+export default mongoose.model('Theater', theaterSchema);

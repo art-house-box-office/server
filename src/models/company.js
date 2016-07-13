@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
-export default mongoose.model('Company', new Schema({
+const companySchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -10,8 +11,6 @@ export default mongoose.model('Company', new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
-  locations: {
-    type: [Schema.Types.ObjectId],
-    ref: 'Location',
-  },
-}));
+});
+
+export default mongoose.model('Company', companySchema);

@@ -1,12 +1,57 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import Screening from '../models/screening';
-const jsonParser = bodyParser.json();
-const router = module.exports = express.Router();
 import std404ErrMsg from '../lib/404';
 import hasRole from '../lib/hasRole';
+import Screening from '../models/screening';
+
+const router = express.Router(); // eslint-disable-line
+const jsonParser = bodyParser.json();
 
 router
+// GET aggregate results
+  .get('/agg', (req, res, next) => {
+    const {
+      company,
+      type,
+      title,
+      genre,
+      director,
+      criticmin,
+      criticmax,
+      releasemin,
+      releasemax,
+      country,
+      location,
+      datemin,
+      datemax,
+      day,
+      timemin,
+      timemax,
+    } = req.query;
+    Screening.aggData(
+      company,
+      type,
+      title,
+      genre,
+      director,
+      criticmin,
+      criticmax,
+      releasemin,
+      releasemax,
+      country,
+      location,
+      datemin,
+      datemax,
+      day,
+      timemin,
+      timemax)
+    .then(data => res.json(data))
+    .catch(err => next({
+      code: 404,
+      msg: 'Data not found',
+      error: err,
+    }));
+  })
   // Retrieve all Screenings
   .get('/', (req, res, next) => {
     Screening
@@ -17,8 +62,8 @@ router
         else next(std404ErrMsg);
       })
       .catch(err => next({
-        error: err,
         code: 404,
+        error: err,
         msg: 'No screenings found',
       }));
   })
@@ -34,13 +79,12 @@ router
       .catch(err => {
         next({
           code: 404,
-          msg: 'Screening not found',
           error: err,
+          msg: 'Screening not found',
         });
       });
   })
-
-// POST a screening
+  // Create a Screening
   .post('/', jsonParser, (req, res, next) => {
     new Screening(req.body)
       .save()
@@ -50,22 +94,19 @@ router
       })
       .catch(err => {
         next({
-          status: 'error',
-          result: 'server err',
+          code: 500,
           error: err,
+          result: 'Unable to create screening',
         });
       });
   })
-
-// PUT (aka update/change) a Screening
-
+  // Update/change a specific Screening
   .put('/:id', jsonParser, (req, res, next) => {
     Screening
-    .findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    )
+      .findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      })
       .then(updatedScreening => {
         if (updatedScreening) res.json(updatedScreening);
         else next(std404ErrMsg);
@@ -73,17 +114,15 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to modify screening',
           error: err,
+          msg: 'Unable to modify screening',
         });
       });
   })
-
-// DELETE a screening
-
+  // Remove a Screening
   .delete('/:id', hasRole('admin'), (req, res, next) => {
     Screening
-    .findByIdAndRemove(req.params.id)
+      .findByIdAndRemove(req.params.id)
       .then(removedScreening => {
         if (removedScreening) res.json(removedScreening);
         else next(std404ErrMsg);
@@ -91,8 +130,8 @@ router
       .catch(err => {
         next({
           code: 500,
-          msg: 'unable to remove screening',
           error: err,
+          msg: 'Unable to remove screening',
         });
       });
   });
