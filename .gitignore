@@ -106,4 +106,4 @@ $RECYCLE.BIN/
 ### Misc ###
 
 .env*
-dist
+dist/**
