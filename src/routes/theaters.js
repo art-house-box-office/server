@@ -40,6 +40,23 @@ router
         });
       });
   })
+  // Retrieve All Rooms By Location
+  .get('/bylocation/:locationId', (req, res, next) => {
+    Theater
+      .find({ location: req.params.locationId })
+      .lean()
+      .then(theaters => {
+        if (theaters) res.json(theaters);
+        else next(std404ErrMsg);
+      })
+      .catch(err => {
+        next({
+          code: 404,
+          error: err,
+          msg: 'Theaters not found',
+        });
+      });
+  })
   // Create a Theater
   .post('/', jsonParser, (req, res, next) => {
     new Theater(req.body)
