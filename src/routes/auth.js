@@ -82,6 +82,7 @@ router
             returnedToken,
             id: user._id, // eslint-disable-line
             username: user.username,
+            company: user.company,
           }));
       })
       .catch(next);
