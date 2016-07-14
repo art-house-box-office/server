@@ -10,6 +10,7 @@ import movies from '../routes/movies';
 import screenings from '../routes/screenings';
 import theaters from '../routes/theaters';
 import users from '../routes/users';
+import runs from '../routes/runs';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/api/screenings', isAuth, screenings);
 app.use('/api/companies', isAuth, companies);
 app.use('/api/movies', isAuth, movies);
 app.use('/api/theaters', isAuth, theaters);
+app.use('/api/runs', isAuth, runs)
 app.use('/api/users', isAuth, /*hasRole('admin'),*/ users);
 
 app.use((err, req, res, next) => { // eslint-disable-line
