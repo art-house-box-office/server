@@ -33,7 +33,7 @@ const movieSchema = new Schema({
   OMDb: {
     type: Boolean,
     required: true,
-  }
+  },
 });
 
 export default mongoose.model('Movie', movieSchema);
