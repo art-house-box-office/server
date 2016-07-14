@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 app.use(cors(process.env.CDN_URL));
 app.use('/api', auth);
 app.use('/api/locations', isAuth, locations);
-app.use('/api/screenings', isAuth, screenings);
+app.use('/api/screenings', screenings);
 app.use('/api/companies', isAuth, companies);
 app.use('/api/movies', isAuth, movies);
 app.use('/api/theaters', isAuth, theaters);
