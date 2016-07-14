@@ -12,7 +12,7 @@ router
     const start = moment(run.startDate);
     const end = moment(run.endDate);
     const data = [];
-    for (let date = start; date.isBefore(end); date.add(1, 'days')) {
+    for (let date = start; date.isSameOrBefore(end); date.add(1, 'days')) {
       run.times.forEach(time => {
         const newScreening = {};
         newScreening.movie = run.movieId;
@@ -35,7 +35,7 @@ router
         next({
           code: 500,
           error: err,
-          result: 'Unable to create screening',
+          result: 'Unable to create screenings',
         });
       });
   });
