@@ -24,6 +24,9 @@ const movieSchema = new Schema({
   released: {
     type: Date,
   },
+  year: {
+    type: Number,
+  },
   directors: {
     type: [String],
   },
