@@ -20,10 +20,7 @@ The default user is Admin and the default password is 'password'. You are encour
 
 ## Things you can do with the REST API
 
-[VALIDATE](#validate)  
 [SIGN UP](#signup)  
-[SIGN IN](#signin)  
-
 ___
 
 <a name="signup"></a>  
