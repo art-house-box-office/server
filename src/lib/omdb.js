@@ -16,6 +16,7 @@ export default {
     newData.title = movie.title;
     newData.genres = movie.genres;
     newData.released = movie.released;
+    newData.year = movie.year;
     newData.directors = movie.directors;
     newData.countries = movie.countries;
     if (movie.metascore) newData.metascore = movie.metascore;

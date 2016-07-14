@@ -53,11 +53,11 @@ screeningSchema.statics.aggData = function aggMatchingCompany(
   type,
   title,
   genre,
-  director,
+  directors,
   criticmin,
   criticmax,
-  releasemin,
-  releasemax,
+  yearmin,
+  yearmax,
   country,
   location,
   datemin,
@@ -114,11 +114,11 @@ screeningSchema.statics.aggData = function aggMatchingCompany(
   }
 
   if (country) {
-    aggPromise.match({ 'movie_data.country': country });
+    aggPromise.match({ 'movie_data.countries': { $in: [country] } });
   }
 
-  if (director) {
-    aggPromise.match({ 'movie_data.director': director });
+  if (directors) {
+    aggPromise.match({ 'movie_data.directors': { $in: [directors] } });
   }
 
   if (title) {
@@ -129,24 +129,24 @@ screeningSchema.statics.aggData = function aggMatchingCompany(
     aggPromise.match({ 'movie_data.genres': { $in: [genre] } });
   }
 
-  if (releasemin) {
-    const releaseminNum = Number(releasemin);
-    aggPromise.match({ 'movie_data.release': { $gte: releaseminNum } });
+  if (yearmin) {
+    const releaseminNum = Number(yearmin);
+    aggPromise.match({ 'movie_data.year': { $gte: releaseminNum } });
   }
 
-  if (releasemax) {
-    const releasemaxNum = Number(releasemax);
-    aggPromise.match({ 'movie_data.release': { $lte: releasemaxNum } });
+  if (yearmax) {
+    const releasemaxNum = Number(yearmax);
+    aggPromise.match({ 'movie_data.year': { $lte: releasemaxNum } });
   }
 
   if (criticmin) {
-    const criticminNum = Number(criticmin) / 10;
-    aggPromise.match({ 'movie_data.critic': { $gte: criticminNum } });
+    const criticminNum = Number(criticmin);
+    aggPromise.match({ 'movie_data.metascore': { $gte: criticminNum } });
   }
 
   if (criticmax) {
-    const criticmaxNum = Number(criticmax) / 10;
-    aggPromise.match({ 'movie_data.critic': { $lte: criticmaxNum } });
+    const criticmaxNum = Number(criticmax);
+    aggPromise.match({ 'movie_data.metascore': { $lte: criticmaxNum } });
   }
 
   if (location) {
