@@ -254,8 +254,8 @@ screeningSchema.statics.aggData = function aggMatchingCompany(
       previous.count += current.count;
       return previous;
     }, { admissions: 0, attendance: 0, count: 0 });
-    totals.avgAdm = totals.admissions / totals.count;
-    totals.avgAtt = totals.attendance / totals.count;
+    totals.avgAdm = (totals.admissions / totals.count) || 0;
+    totals.avgAtt = (totals.attendance / totals.count) || 0;
 
     // Polyfill any missing months
     for (let i = 1; i < 8; i++) {
