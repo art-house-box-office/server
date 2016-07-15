@@ -8,6 +8,12 @@ const router = express.Router(); // eslint-disable-line
 const jsonParser = bodyParser.json();
 
 router
+// Get screenings by company 
+  .get('/bycompany/:id', (req, res, next) => {
+    const companyId = req.params.id;
+    Screening.byCompany(companyId)
+      .then(r => res.json(r));
+  })
 // GET aggregate results
   .get('/agg', (req, res, next) => {
     const {

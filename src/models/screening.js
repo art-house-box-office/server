@@ -42,6 +42,62 @@ const screeningSchema = new Schema({
   // },
 });
 
+screeningSchema.statics.byCompany = function byCompany(companyId) {
+  const companyPromise = this.aggregate([
+    {
+      $project:
+      {
+        movie: true,
+        theater: true,
+        attendanceTotal: true,
+        admissionsTotal: true,
+        concessionsTotal: true,
+        dateTime: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] },
+        seats: true,
+        format: true,
+        dayOfWeek: { $dayOfWeek: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
+        hourOfDay: { $hour: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
+        month: { $month: '$dateTime' },
+      },
+    },
+  ]);
+
+  companyPromise.lookup({
+    from: 'movies',
+    localField: 'movie',
+    foreignField: '_id',
+    as: 'movie_data',
+  });
+  companyPromise.unwind('$movie_data');
+
+  companyPromise.lookup({
+    from: 'theaters',
+    localField: 'theater',
+    foreignField: '_id',
+    as: 'theater_data',
+  });
+  companyPromise.unwind('$theater_data');
+
+  companyPromise.lookup({
+    from: 'locations',
+    localField: 'theater_data.location',
+    foreignField: '_id',
+    as: 'locations_data',
+  });
+  companyPromise.unwind('$locations_data');
+
+  companyPromise.match({ 'locations_data.company': mongoose.Types.ObjectId(companyId) });
+
+  companyPromise.sort({ dateTime: -1 });
+
+  return companyPromise.then(data => {
+    return data.map(x => {
+      x.dateTime = moment(x.dateTime).format('MM-DD-YYYY HH:mm');
+      return x;
+    });
+  });
+};
+
 screeningSchema.virtual('ratioTicketsSale')
   .get(() => this.attendenceTotal / this.admissionsTotal);
 
