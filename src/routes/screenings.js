@@ -8,11 +8,16 @@ const router = express.Router(); // eslint-disable-line
 const jsonParser = bodyParser.json();
 
 router
-// Get screenings by company 
+// Get screenings by company
   .get('/bycompany/:id', (req, res, next) => {
     const companyId = req.params.id;
     Screening.byCompany(companyId)
-      .then(r => res.json(r));
+      .then(r => res.json(r))
+      .catch(err => next({
+        code: 404,
+        msg: 'Data not found',
+        error: err,
+      }));
   })
 // GET aggregate results
   .get('/agg', (req, res, next) => {
