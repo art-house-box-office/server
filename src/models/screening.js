@@ -52,12 +52,13 @@ screeningSchema.statics.byCompany = function byCompany(companyId) {
         attendanceTotal: true,
         admissionsTotal: true,
         concessionsTotal: true,
-        dateTime: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] },
+        dateTime: true,
+        // dateTime: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] },
         seats: true,
         format: true,
-        dayOfWeek: { $dayOfWeek: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
-        hourOfDay: { $hour: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
-        month: { $month: '$dateTime' },
+        // dayOfWeek: { $dayOfWeek: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
+        // hourOfDay: { $hour: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
+        // month: { $month: '$dateTime' },
       },
     },
   ]);
@@ -91,10 +92,11 @@ screeningSchema.statics.byCompany = function byCompany(companyId) {
   companyPromise.sort({ dateTime: -1 });
 
   return companyPromise.then(data => {
-    return data.map(x => {
-      x.dateTime = moment(x.dateTime).format('MM-DD-YYYY HH:mm');
+    const mapArray = data.map(x => {
+      x.dateTime = moment(x.dateTime).format('MMM-D YYYY, h:mm a');
       return x;
     });
+    return mapArray;
   });
 };
 
@@ -252,8 +254,8 @@ screeningSchema.statics.aggData = function aggMatchingCompany(
       previous.count += current.count;
       return previous;
     }, { admissions: 0, attendance: 0, count: 0 });
-    totals.avgAdm = totals.admissions / data.length;
-    totals.avgAtt = totals.attendance / data.length;
+    totals.avgAdm = totals.admissions / totals.count;
+    totals.avgAtt = totals.attendance / totals.count;
 
     // Polyfill any missing months
     for (let i = 1; i < 8; i++) {

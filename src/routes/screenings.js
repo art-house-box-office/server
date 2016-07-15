@@ -141,7 +141,7 @@ router
       });
   })
   // Remove a Screening
-  .delete('/:id', hasRole('admin'), (req, res, next) => {
+  .delete('/:id', (req, res, next) => {
     Screening
       .findByIdAndRemove(req.params.id)
       .then(removedScreening => {
