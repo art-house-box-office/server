@@ -52,6 +52,16 @@ router
       error: err,
     }));
   })
+  // Retrieve Top Ten Grossing movies
+  .get('/topadm', (req, res, next) => {
+    Screening.topTenAdm()
+    .then(data => res.json(data))
+    .catch(err => next({
+      code: 404,
+      msg: 'Data not found',
+      error: err,
+    }));
+  })
   // Retrieve all Screenings
   .get('/', (req, res, next) => {
     Screening
