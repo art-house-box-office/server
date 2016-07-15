@@ -280,6 +280,53 @@ screeningSchema.statics.aggData = function aggMatchingCompany(
   });
 };
 
+screeningSchema.statics.topTenAdm = function topTenAdm() {
+  const tenPromise = this.aggregate([
+    {
+      $project:
+      {
+        movie: true,
+        theater: true,
+        attendanceTotal: true,
+        admissionsTotal: true,
+        concessionsTotal: true,
+        dateTime: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] },
+        seats: true,
+        format: true,
+        dayOfWeek: { $dayOfWeek: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
+        hourOfDay: { $hour: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
+        month: { $month: '$dateTime' },
+      },
+    },
+  ]);
+  tenPromise.lookup({
+    from: 'movies',
+    localField: 'movie',
+    foreignField: '_id',
+    as: 'movie_data',
+  });
+  tenPromise.unwind('$movie_data');
+
+  // Group by month
+  tenPromise.group({
+    _id: '$movie',
+    count: { $sum: 1 },
+    admissions: { $sum: '$admissionsTotal' },
+    attendance: { $sum: '$attendanceTotal' },
+    avgAdm: { $avg: '$admissionsTotal' },
+    avgAtt: { $avg: '$attendanceTotal' },
+    title: { $first: '$movie_data.title' },
+  });
+
+  // Sort based on admissions total
+  tenPromise.sort({ admissions: -1 });
+
+  // limit to top ten
+  tenPromise.limit(10);
+
+  return tenPromise;
+};
+
 const screening = mongoose.model('Screening', screeningSchema);
 
 export default screening;
