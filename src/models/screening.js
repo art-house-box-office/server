@@ -316,13 +316,14 @@ screeningSchema.statics.topTenAdm = function topTenAdm() {
     avgAdm: { $avg: '$admissionsTotal' },
     avgAtt: { $avg: '$attendanceTotal' },
     title: { $first: '$movie_data.title' },
+    poster: { $first: '$movie_data.OMDbdata.poster' },
   });
 
   // Sort based on admissions total
   tenPromise.sort({ admissions: -1 });
 
   // limit to top ten
-  tenPromise.limit(10);
+  tenPromise.limit(3);
 
   return tenPromise;
 };
