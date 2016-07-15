@@ -51,6 +51,7 @@ router
             returnedToken,
             id: user._id, // eslint-disable-line
             username: user.username,
+            email: user.email,
           }));
       })
       .catch(err => {
@@ -83,6 +84,7 @@ router
             id: user._id, // eslint-disable-line
             username: user.username,
             company: user.company,
+            email: user.email,
           }));
       })
       .catch(next);
