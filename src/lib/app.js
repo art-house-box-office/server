@@ -2,7 +2,6 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from './cors';
 import isAuth from './isAuth';
-import hasRole from './hasRole';
 import auth from '../routes/auth';
 import companies from '../routes/companies';
 import locations from '../routes/locations';
@@ -22,8 +21,8 @@ app.use('/api/screenings', screenings);
 app.use('/api/companies', isAuth, companies);
 app.use('/api/movies', isAuth, movies);
 app.use('/api/theaters', isAuth, theaters);
-app.use('/api/runs', isAuth, runs)
-app.use('/api/users', isAuth, /*hasRole('admin'),*/ users);
+app.use('/api/runs', isAuth, runs);
+app.use('/api/users', isAuth, users);
 
 app.use((err, req, res, next) => { // eslint-disable-line
   console.error(err); // eslint-disable-line

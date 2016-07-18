@@ -33,13 +33,6 @@ const screeningSchema = new Schema({
     type: Number,
     required: true,
   },
-  // Breaks. Will check later to confirm if these are needed for virtual properties.
-  // toObject: {
-  //   virtuals: true,
-  // },
-  // toJSON: {
-  //   virtuals: true,
-  // },
 });
 
 screeningSchema.statics.byCompany = function byCompany(companyId) {
@@ -53,12 +46,8 @@ screeningSchema.statics.byCompany = function byCompany(companyId) {
         admissionsTotal: true,
         concessionsTotal: true,
         dateTime: true,
-        // dateTime: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] },
         seats: true,
         format: true,
-        // dayOfWeek: { $dayOfWeek: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
-        // hourOfDay: { $hour: { $subtract: ['$dateTime', 1000 * 60 * 60 * 7] } },
-        // month: { $month: '$dateTime' },
       },
     },
   ]);
