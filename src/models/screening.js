@@ -214,11 +214,17 @@ screeningSchema.statics.aggData = function aggMatchingCompany(
   if (datemin) {
     const start = moment.utc(datemin).toDate();
     aggPromise.match({ dateTime: { $gte: start } });
+  } else {
+    const start = moment.utc('2016-02-01').toDate();
+    aggPromise.match({ dateTime: { $gte: start } });
   }
 
   if (datemax) {
     const end = moment.utc(datemax).toDate();
     aggPromise.match({ dateTime: { $lte: end } });
+  } else {
+    const start = moment.utc('2016-07-31').toDate();
+    aggPromise.match({ dateTime: { $lte: start } });
   }
 
   if (day) {
