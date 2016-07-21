@@ -44,10 +44,11 @@ const mockLocation = {
   address: 'mockAddress',
 };
 
-describe('integration', function () { // eslint-disable-line
-  describe('user creation', function () { // eslint-disable-line
-    before('create testAdmin user', function (done) { // eslint-disable-line
-      this.timeout(10000);
+
+
+describe('integration', () => { // eslint-disable-line
+  describe('user creation', () => { // eslint-disable-line
+    before('create testAdmin user', (done) => {
       const adminUser = new User(testAdmin);
       adminUser.generateHash(adminUser.password);
       adminUser.roles.push('admin');
@@ -60,8 +61,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    before('get token for testAdmin', function (done) { // eslint-disable-line
-      this.timeout(10000);
+    before('get token for testAdmin', (done) => {
       request
         .post('/api/signin')
         .send(testAdmin)
@@ -72,8 +72,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it('create testUser1', function (done) { // eslint-disable-line
-      this.timeout(10000);
+    it('create testUser1', (done) => {
       request
         .post('/api/signup')
         .send(testUser1)
@@ -87,8 +86,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it('create testUser2', function (done) { // eslint-disable-line
-      this.timeout(10000);
+    it('create testUser2', (done) => {
       request
         .post('/api/signup')
         .send(testUser2)
@@ -102,8 +100,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it('set testUser1 as admin', function (done) { // eslint-disable-line
-      this.timeout(10000);
+    it('set testUser1 as admin', (done) => {
       request
         .post(`/api/users/${testUser1.id}/roles/admin`)
         .set('authorization', `Bearer ${testAdmin.token}`)
@@ -120,14 +117,14 @@ describe('integration', function () { // eslint-disable-line
     });
   });
 
-  describe('theater endpoint', function () { // eslint-disable-line
+  describe('theater endpoint', () => {
     const url = '/api/theaters';
     const testData = {
       name: 'test',
       seats: 30,
     };
 
-    it(`POST to ${url} completes with id`, function (done) { // eslint-disable-line
+    it(`POST to ${url} completes with id`, (done) => {
       request
         .post(url)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -142,7 +139,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`GET to ${url}/:id shows new data`, function (done) { // eslint-disable-line
+    it(`GET to ${url}/:id shows new data`, (done) => {
       request
         .get(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -155,7 +152,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`PUT to ${url}/:id returns modified data`, function (done) { // eslint-disable-line
+    it(`PUT to ${url}/:id returns modified data`, (done) => {
       testData.name = 'newtest';
       request
         .put(`${url}/${testData.id}`)
@@ -171,7 +168,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`DELETE to ${url}/:id by unauthorized user fails`, function (done) { // eslint-disable-line
+    it(`DELETE to ${url}/:id by unauthorized user fails`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser2.token}`)
@@ -190,7 +187,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`DELETE to ${url}/:id by authorized user completes`, function (done) { // eslint-disable-line
+    it(`DELETE to ${url}/:id by authorized user completes`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -209,7 +206,7 @@ describe('integration', function () { // eslint-disable-line
     });
   });
 
-  describe('screenings endpoint', function () { // eslint-disable-line
+  describe('screenings endpoint', () => {
     const url = '/api/screenings';
     const testData = {
       attendanceTotal: 30,
@@ -218,8 +215,7 @@ describe('integration', function () { // eslint-disable-line
       seats: 30,
     };
 
-    before('creating mock theater entry', function (done) { // eslint-disable-line
-      this.timeout(2000);
+    before('creating mock theater entry', (done) => {
       request
         .post('/api/theaters')
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -233,8 +229,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    before('creating mock movie entry', function (done) { // eslint-disable-line
-      this.timeout(2000);
+    before('creating mock movie entry', (done) => {
       request
         .post('/api/movies')
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -248,7 +243,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`POST to ${url} completes with id`, function (done) { // eslint-disable-line
+    it(`POST to ${url} completes with id`, (done) => {
       request
         .post(url)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -263,7 +258,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`GET to ${url}/:id shows new data`, function (done) { // eslint-disable-line
+    it(`GET to ${url}/:id shows new data`, (done) => {
       request
         .get(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -276,7 +271,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`PUT to ${url}/:id returns modified data`, function (done) { // eslint-disable-line
+    it(`PUT to ${url}/:id returns modified data`, (done) => {
       testData.seats = 40;
       request
         .put(`${url}/${testData.id}`)
@@ -292,7 +287,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it.skip(`DELETE to ${url}/:id by unauthorized user fails`, function (done) { // eslint-disable-line
+    it.skip(`DELETE to ${url}/:id by unauthorized user fails`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser2.token}`)
@@ -311,7 +306,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`DELETE to ${url}/:id by authorized user completes`, function (done) { // eslint-disable-line
+    it(`DELETE to ${url}/:id by authorized user completes`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -330,13 +325,13 @@ describe('integration', function () { // eslint-disable-line
     });
   });
 
-  describe('movie endpoint', function () { // eslint-disable-line
+  describe('movie endpoint', () => {
     const url = '/api/movies';
     const testData = {
       title: 'Jaws',
     };
 
-    it(`POST to ${url} completes with id`, function (done) { // eslint-disable-line
+    it(`POST to ${url} completes with id`, (done) => {
       request
         .post(url)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -351,7 +346,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`GET to ${url}/:id shows new data`, function (done) { // eslint-disable-line
+    it(`GET to ${url}/:id shows new data`, (done) => {
       request
         .get(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -364,7 +359,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`PUT to ${url}/:id returns modified data`, function (done) { // eslint-disable-line
+    it(`PUT to ${url}/:id returns modified data`, (done) => {
       testData.title = 'newtest';
       request
         .put(`${url}/${testData.id}`)
@@ -380,7 +375,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`DELETE to ${url}/:id by unauthorized user fails`, function (done) { // eslint-disable-line
+    it(`DELETE to ${url}/:id by unauthorized user fails`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser2.token}`)
@@ -398,7 +393,7 @@ describe('integration', function () { // eslint-disable-line
             });
         });
     });
-    it(`DELETE to ${url}/:id by authorized user completes`, function (done) { // eslint-disable-line
+    it(`DELETE to ${url}/:id by authorized user completes`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -417,7 +412,7 @@ describe('integration', function () { // eslint-disable-line
     });
   });
 
-  describe('location endpoint', function () { // eslint-disable-line
+  describe('location endpoint', () => {
     const url = '/api/locations';
     const testData = {
       name: 'test',
@@ -428,7 +423,7 @@ describe('integration', function () { // eslint-disable-line
       address: 'testAddress',
     };
 
-    it(`POST to ${url} completes with id`, function (done) { // eslint-disable-line
+    it(`POST to ${url} completes with id`, (done) => {
       // console.log(testData);
       request
         .post(url)
@@ -444,7 +439,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`GET to ${url}/:id shows new data`, function (done) { // eslint-disable-line
+    it(`GET to ${url}/:id shows new data`, (done) => {
       request
         .get(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -457,7 +452,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`PUT to ${url}/:id returns modified data`, function (done) { // eslint-disable-line
+    it(`PUT to ${url}/:id returns modified data`, (done) => {
       testData.name = 'newtest';
       request
         .put(`${url}/${testData.id}`)
@@ -473,7 +468,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`DELETE to ${url}/:id by unauthorized user fails`, function (done) { // eslint-disable-line
+    it(`DELETE to ${url}/:id by unauthorized user fails`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser2.token}`)
@@ -492,7 +487,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`DELETE to ${url}/:id by authorized user completes`, function (done) { // eslint-disable-line
+    it(`DELETE to ${url}/:id by authorized user completes`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -517,8 +512,7 @@ describe('integration', function () { // eslint-disable-line
       name: 'test',
     };
 
-    before('creating mock location entry', function (done) { // eslint-disable-line
-      this.timeout(2000);
+    before('creating mock location entry', (done) => {
       request
         .post('/api/locations')
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -532,7 +526,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`POST to ${url} completes with id`, function (done) { // eslint-disable-line
+    it(`POST to ${url} completes with id`, (done) => {
       request
         .post(url)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -547,7 +541,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`GET to ${url}/:id shows new data`, function (done) { // eslint-disable-line
+    it(`GET to ${url}/:id shows new data`, (done) => {
       request
         .get(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -560,7 +554,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`PUT to ${url}/:id returns modified data`, function (done) { // eslint-disable-line
+    it(`PUT to ${url}/:id returns modified data`, (done) => {
       testData.name = 'newtest';
       request
         .put(`${url}/${testData.id}`)
@@ -576,7 +570,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`DELETE to ${url}/:id by unauthorized user fails`, function (done) { // eslint-disable-line
+    it(`DELETE to ${url}/:id by unauthorized user fails`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser2.token}`)
@@ -595,7 +589,7 @@ describe('integration', function () { // eslint-disable-line
         });
     });
 
-    it(`DELETE to ${url}/:id by authorized user completes`, function (done) { // eslint-disable-line
+    it(`DELETE to ${url}/:id by authorized user completes`, (done) => {
       request
         .delete(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
@@ -641,24 +635,21 @@ describe('integration', function () { // eslint-disable-line
       });
   });
 
-  after('delete testuser1', function (done) { // eslint-disable-line
-    this.timeout(10000);
+  after('delete testuser1', (done) => {
     request
       .delete(`/api/users/${testUser1.id}`)
       .set('authorization', `Bearer ${testAdmin.token}`)
       .end(done);
   });
 
-  after('delete testuser2', function (done) { // eslint-disable-line
-    this.timeout(10000);
+  after('delete testuser2', (done) => {
     request
       .delete(`/api/users/${testUser2.id}`)
       .set('authorization', `Bearer ${testAdmin.token}`)
       .end(done);
   });
 
-  after('delete testAdmin', function (done) { // eslint-disable-line
-    this.timeout(10000);
+  after('delete testAdmin', (done) => {
     request
       .delete(`/api/users/${testAdmin.id}`)
       .set('authorization', `Bearer ${testAdmin.token}`)

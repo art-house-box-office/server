@@ -13,7 +13,7 @@ import runs from '../routes/runs';
 
 const app = express();
 
-if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
+if (process.env.NODE_ENV !== 'production' && !process.env.TEST) app.use(morgan('dev'));
 app.use(cors(process.env.CDN_URL));
 app.use('/api', auth);
 app.use('/api/locations', isAuth, locations);
@@ -25,7 +25,7 @@ app.use('/api/runs', isAuth, runs);
 app.use('/api/users', isAuth, users);
 
 app.use((err, req, res, next) => { // eslint-disable-line
-  console.error(err); // eslint-disable-line
+  if (!process.env.TEST) console.error(err); // eslint-disable-line
   res.status(err.code || 500).json({
     code: 500,
     error: err.error || 'Server error',
