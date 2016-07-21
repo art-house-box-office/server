@@ -5,11 +5,14 @@ import chaiHttp from 'chai-http';
 import app from '../src/lib/app';
 import token from '../src/lib/token';
 import User from '../src/models/user';
+import supertest from 'supertest';
 
 chai.use(chaiHttp);
 
 const assert = chai.assert;
-const request = chai.request(app);
+// const request = chai.request(app);
+const request = supertest(app);
+
 
 const testAdmin = {
   username: 'testAdmin',
@@ -143,13 +146,16 @@ describe('integration', () => { // eslint-disable-line
       request
         .get(`${url}/${testData.id}`)
         .set('authorization', `Bearer ${testUser1.token}`)
-        .end((err, res) => {
-          assert.equal(res.statusCode, 200);
-          const result = JSON.parse(res.text);
-          assert.isObject(result);
-          assert.propertyVal(result, '_id', testData.id);
-          done();
-        });
+        .expect('Content-type', /json/)
+        .expect(/_id/)
+        .expect(200, done);
+        // .end((err, res) => {
+        //   assert.equal(res.statusCode, 200);
+        //   const result = JSON.parse(res.text);
+        //   assert.isObject(result);
+        //   assert.propertyVal(result, '_id', testData.id);
+        //   done();
+        // });
     });
 
     it(`PUT to ${url}/:id returns modified data`, (done) => {
