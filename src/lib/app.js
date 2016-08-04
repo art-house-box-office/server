@@ -10,11 +10,13 @@ import screenings from '../routes/screenings';
 import theaters from '../routes/theaters';
 import users from '../routes/users';
 import runs from '../routes/runs';
+import compress from 'compression';
 
 const app = express();
 
 if (process.env.NODE_ENV !== 'production' && !process.env.TEST) app.use(morgan('dev'));
 app.use(cors(process.env.CDN_URL));
+app.use(compress());
 app.use('/api', auth);
 app.use('/api/locations', isAuth, locations);
 app.use('/api/screenings', screenings);
