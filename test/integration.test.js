@@ -1,4 +1,4 @@
-import '../src/lib/setup-dotenv';
+// import '../src/lib/setup-dotenv';
 import '../src/lib/setup-mongoose';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
